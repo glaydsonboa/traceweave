@@ -109,10 +109,102 @@ Traceweave currently describes an engineering direction and protocol. Interfaces
 
 It should not be interpreted as production-ready software at this stage.
 
+## Reference implementation — version 0.1
+
+A minimal, inspectable CLI that implements the protocol above. It is intentionally
+small: Python standard library only, no dependencies, no daemon, no database, no
+network calls.
+
+### Installation
+
+```bash
+git clone https://github.com/glaydsonboa/traceweave.git
+cd traceweave
+python -m pip install -e .
+```
+
+Requires Python 3.11+ and a local Git installation.
+
+### Usage
+
+Inside any Git repository:
+
+```bash
+traceweave checkpoint \
+  --summary "Add configuration validation" \
+  --executor "DeepSeek"
+```
+
+This inspects the repository with read-only Git commands and writes a checkpoint to:
+
+```text
+.traceweave/checkpoints/<checkpoint_id>.json
+```
+
+The first checkpoint also creates the session record at `.traceweave/session.json`;
+later checkpoints reuse the same session and base commit.
+
+Supported options:
+
+| Option | Meaning |
+|---|---|
+| `--summary` | one-line description of the work performed |
+| `--executor` | human, CLI, agent or model that performed the work (required by SPEC.md §2) |
+| `--requested-by` | who or what requested the work |
+| `--prompt-generator` | who or what generated the instruction |
+| `--session-id` | stable session identifier (default: auto-created and persisted) |
+| `--base-commit` | commit from which the session started (default: session base or current HEAD) |
+| `--graph-status` | `unknown` (default) or `not_applicable` — `synced`/`stale` are reserved for a future graph integration |
+| `--path` | repository path to inspect (default: current directory) |
+
+Any provenance option that is not provided is recorded as `null` — never inferred
+from Git username, commit author, environment variables or repository metadata.
+
+Provenance names are the explicit values supplied on the command line. The CLI
+never infers an actor type or a causal role from a name: each provenance link
+records `{"type": null, "name": "<explicit name>"}` and no `chain` field is
+generated.
+
+Verify a checkpoint:
+
+```bash
+traceweave verify .traceweave/checkpoints/<checkpoint_id>.json
+```
+
+Exits `0` when the checkpoint passes, non-zero when it fails. Verification covers:
+session and checkpoint ids, `base_commit`/`head_commit`, explicit test results,
+explicit-or-null provenance links, and `graph_sync.source_commit == git.head_commit`
+whenever `graph_sync.status` is `synced`.
+
+### What version 0.1 intentionally does not do
+
+- it does **not** commit, push, checkout, reset, clean or rebase — only read-only Git commands;
+- it does **not** collect secrets, tokens, environment variable values, transcripts or arbitrary file contents;
+- it does **not** integrate Graphify — `graph_sync` supports only `not_applicable` and `unknown` (default);
+- it does **not** ingest test results automatically — when no test was run, `tests` is one explicit entry `{"command": null, "result": "not_run", "evidence": null}`, never an invented pass;
+- generated checkpoints default to `"status": "partial"` — the CLI does **not** promote a checkpoint to `complete` without sufficient evidence (all `complete`/`partial`/`blocked` values from SPEC.md remain supported by the protocol);
+- it does **not** make network requests or send telemetry.
+
+### Minimal runnable example
+
+```bash
+mkdir /tmp/tw-demo && cd /tmp/tw-demo
+git init -q && git config user.email demo@example.com && git config user.name Demo
+echo "config" > app.txt && git add . && git commit -qm init
+
+traceweave checkpoint \
+  --summary "Add configuration validation" \
+  --executor "DeepSeek" \
+  --requested-by "Glaydson" \
+  --prompt-generator "ChatGPT"
+
+traceweave verify .traceweave/checkpoints/*.json
+```
+
 ## Limitations
 
 - The protocol and artifact schemas are not yet stable.
-- Reference implementations are still to be published.
+- The version 0.1 reference implementation is minimal — tests are not auto-ingested and graph integration is absent by design.
 - Code-graph integration depends on the structural tooling used by a project.
 - Provenance quality ultimately depends on what executors and surrounding infrastructure can observe and record.
 
