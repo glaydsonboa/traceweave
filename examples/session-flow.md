@@ -1,125 +1,254 @@
-# Traceweave — Minimal Session Flow
+# Traceweave — Public Session Flow Example
 
-This example shows one complete Traceweave session without requiring a Traceweave application.
+This example demonstrates the public Traceweave method without requiring a production Traceweave system.
+
+All names, identifiers and repository details are fictitious.
 
 ## Scenario
 
-A developer asks an AI coding agent to add validation for a required API URL.
+A developer requests validation for a required service URL.
 
-Repository: `example/traceweave-demo`  
-Branch: `feature/config-validation`  
-Starting commit: `2f1a83c`
+Repository:
 
-## 1. Session start
+`example/traceweave-demo`
 
-Create a stable session identifier:
+Branch:
 
-`session-20260821-demo`
+`feature/config-validation`
 
-Record the requester, prompt generator, executor, repository, branch and base commit.
+Starting commit:
 
-## 2. Provenance
+`2f1a83c`
 
-The causal chain is:
+## 1. Request
 
-`Example User → ChatGPT → Codex CLI → code change`
+Observed request:
 
-Meaning:
+> Add validation so startup fails clearly when the required service URL is missing.
 
-1. the human requested the change;
-2. ChatGPT formulated the technical instruction;
-3. Codex CLI executed the change;
-4. files, tests and Git provide evidence.
+Traceweave records the bounded objective.
 
-No authorship is inferred beyond that chain.
+It does not infer additional architectural goals.
 
-## 3. Execution
+## 2. Session identity
 
-The executor changes:
+Example:
 
-- `src/config.js`
-- `tests/config.test.js`
+```json
+{
+  "session_id": "session-20260823-demo",
+  "repository": "example/traceweave-demo",
+  "branch": "feature/config-validation",
+  "base_commit": "2f1a83c"
+}
+```
 
-Result:
+## 3. Provenance
 
-> Missing required API URL is rejected during configuration loading.
+Example roles:
 
-## 4. Test
+```text
+request authority
+→ instruction generator
+→ executor
+→ verifier
+```
 
-Command:
+For this fictitious session:
 
-`npm test -- config.test.js`
+```json
+{
+  "requested_by": {"type": "human", "name": "Example Maintainer"},
+  "intellectual_author": {"type": "human", "name": "Example Maintainer"},
+  "prompt_generator": {"type": "ai", "name": "Example Assistant"},
+  "executor": {"type": "ai_cli", "name": "Example Coding CLI"},
+  "verifier": {"type": "process", "name": "test-suite"}
+}
+```
+
+These are distinct roles.
+
+No role is inferred from the name of another role.
+
+## 4. Current-state inspection
+
+Before editing, the executor observes:
+
+- branch: `feature/config-validation`;
+- HEAD: `2f1a83c`;
+- working tree: clean;
+- existing validation tests: 3 passing;
+- no test currently covers a missing service URL.
+
+This is a checkpointable observation, not yet a diagnosis.
+
+## 5. Hypothesis
+
+Hypothesis:
+
+> Startup accepts an empty service URL because the configuration loader checks only whether the key exists, not whether its normalized value is non-empty.
+
+This is still an inference.
+
+## 6. Adversarial test
+
+Before changing production code, add or run a focused test that would fail only if the suspected condition exists.
 
 Observed result:
 
-`4 tests passed`
+```text
+test_missing_service_url
+expected: startup error
+observed: startup succeeds
+result: failed
+```
+
+The failure supports the hypothesis.
+
+## 7. Minimal correction
+
+Changed files:
+
+- `src/config.py`
+- `tests/test_config.py`
+
+The correction validates the normalized value at the configuration boundary.
+
+No unrelated refactor is included.
+
+## 8. Regression
+
+Command:
+
+```bash
+python -m pytest tests/test_config.py
+```
+
+Observed result:
+
+```text
+4 passed
+```
 
 Traceweave records the command and observed result.
 
-## 5. Commit
+It does not invent results for tests that were not executed.
+
+## 9. Git state
 
 The verified change is committed:
 
-`7c91b4e fix: validate required API URL`
+```text
+7c91b4e fix: validate required service URL
+```
 
-Git state:
+Observed state:
 
-- branch: `feature/config-validation`
-- base: `2f1a83c`
-- head: `7c91b4e`
-- working tree: `clean`
+```json
+{
+  "branch": "feature/config-validation",
+  "base_commit": "2f1a83c",
+  "head_commit": "7c91b4e",
+  "working_tree": "clean"
+}
+```
 
-## 6. Graph synchronization
+This proves repository state.
 
-The structural graph is verified against:
+It does not yet prove external delivery.
 
-`7c91b4e`
+## 10. Optional structural state
 
-Recorded state:
+Assume the project uses a fictitious structural index.
 
-- engine: `graphify`
-- status: `synced`
-- source commit: `7c91b4e`
+After rebuilding it:
 
-Invariant for this checkpoint:
+```json
+{
+  "engine": "example-structural-tool",
+  "status": "synced",
+  "source_commit": "7c91b4e"
+}
+```
 
-`git.head_commit == graph_sync.source_commit`
+If the index instead still referenced `2f1a83c`, the correct state would be `stale`.
 
-## 7. Checkpoint
+Traceweave does not require this step when structural tooling is not applicable.
 
-The session writes:
+## 11. Checkpoint
 
-[`checkpoint.json`](checkpoint.json)
+The session can now create a checkpoint containing:
 
-The checkpoint now contains enough information to answer:
+- session identity;
+- provenance;
+- bounded work summary;
+- changed files;
+- test result;
+- Git state;
+- optional structural state;
+- status.
 
-- what work was requested;
-- who participated;
-- what files changed;
-- what test ran;
-- whether it passed;
-- which commit contains the result;
-- whether the code graph represents the same revision.
+A reasonable status is:
 
-## 8. Reconstruction
+```json
+{
+  "status": "complete"
+}
+```
 
-A later human or agent can reconstruct the technical state without reading the original chat transcript.
+Here `complete` means:
 
-Minimal reconstruction path:
+> complete for the checkpoint boundary that required the focused change, tests and local Git state.
 
-`checkpoint → Git commit → changed files → test command → graph revision`
+It does **not** mean the feature has been deployed.
 
-That is the core Traceweave behavior.
+## 12. Delivery proof
 
-## 9. Minimal implementation contract
+If the requirement also says “publish the change to the remote repository,” then a local commit is insufficient.
 
-A future Traceweave CLI only needs to automate what this example already demonstrates manually:
+A later observation might record:
 
-1. capture session metadata;
-2. capture provenance;
-3. read Git state;
-4. collect test evidence;
-5. verify graph state;
-6. write the checkpoint.
+```json
+{
+  "delivery_proof_id": "delivery-demo-001",
+  "type": "remote_commit_readback",
+  "revision": "7c91b4e",
+  "result": "confirmed"
+}
+```
 
-No larger platform is required for the protocol to be useful.
+Only then can the evidence trail claim that the expected remote delivery was observed.
+
+The public Reference Demonstration v0.1 does not implement a production delivery-proof engine; this section demonstrates the protocol distinction.
+
+## 13. Reconstruction
+
+A later reviewer should be able to follow:
+
+```text
+checkpoint
+→ request
+→ provenance
+→ changed files
+→ test evidence
+→ Git revision
+→ optional structural state
+→ optional delivery proof
+```
+
+The reviewer does not need to trust the original conversation.
+
+The evidence trail is the continuity mechanism.
+
+## 14. What this example intentionally does not reveal
+
+This public example does not include:
+
+- private infrastructure;
+- private project identifiers;
+- proprietary orchestration;
+- proprietary validation mechanisms;
+- production integration details;
+- unpublished heuristics.
+
+Its purpose is to teach the protocol, not reconstruct a private implementation.
