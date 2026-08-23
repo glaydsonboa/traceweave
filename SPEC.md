@@ -1,124 +1,219 @@
-# Traceweave Protocol — Minimal Specification
+# Traceweave Protocol — Public Specification
 
-> **Traceweave** is a lightweight protocol for preserving verifiable continuity across AI-assisted coding sessions.
+> **A public protocol for evidence-governed continuity and provenance in AI-assisted software engineering.**
 
-This specification defines the smallest useful unit of Traceweave: a **session** that produces one or more **checkpoints** containing provenance, execution evidence, Git state, and code-graph synchronization state.
+## 0. Scope
 
-The protocol does not require a specific AI model, CLI, Git host, or graph engine.
+This document defines the **open semantics** of Traceweave.
 
-## 1. Core idea
+It defines how public Traceweave artifacts should represent identity, provenance, evidence, Git state, checkpoints and verification.
 
-A coding session should be reconstructable from evidence instead of memory.
+It does **not** require publication of a production engine, orchestration system, graph implementation, private adapter or commercial capability.
 
-Minimal chain:
+The Python code currently published in this repository is a limited **Reference Demonstration v0.1**. It implements only a subset of this public specification.
 
-`session start → provenance → execution → test → Git state → graph sync → checkpoint`
+## 1. Normative language
 
-A valid checkpoint answers five questions:
+The terms **MUST**, **MUST NOT**, **SHOULD**, **SHOULD NOT** and **MAY** are used in their ordinary specification sense.
 
-1. What session is this?
-2. Who or what caused the work?
-3. What changed and what was tested?
-4. What Git state represents the result?
-5. Is the structural graph synchronized with that Git state?
+The central normative rule is:
 
-## 2. Session
+> **A Traceweave artifact MUST NOT promote an unobserved claim to fact.**
 
-A **session** is one bounded period of technical work performed by a human, an AI coding agent, or a combination of both.
+Corollaries:
 
-Minimum session fields:
+- unknown is not false;
+- absent evidence is not negative evidence by default;
+- a report is not proof merely because it says “resolved”;
+- a commit is not proof of runtime acceptance;
+- a checkpoint is not a delivery certificate.
+
+## 2. Core model
+
+A technical session should be reconstructable from evidence rather than memory alone.
+
+Minimal conceptual chain:
+
+```text
+request
+→ instruction
+→ execution
+→ observed evidence
+→ repository state
+→ checkpoint
+```
+
+A deployment may add more identity links, for example:
+
+```text
+request_id
+→ prompt_id
+→ execution_id
+→ evidence_id
+→ checkpoint_id
+→ delivery_proof_id
+```
+
+An implementation MAY use different identifier names, but identities MUST remain stable enough to reconstruct causal relationships.
+
+## 3. Roles and authorship
+
+Traceweave distinguishes roles that are often incorrectly collapsed.
+
+Recommended roles:
+
+| Role | Meaning |
+|---|---|
+| `requested_by` | authority that requested the work |
+| `intellectual_author` | originator of the method, design or decision when known |
+| `prompt_generator` | actor that formulated an instruction or prompt |
+| `executor` | actor that performed the technical work |
+| `verifier` | actor/process that checked evidence |
+| `publisher` | actor/process that published the artifact |
+
+Rules:
+
+1. An `executor` MUST NOT be inferred to be the `intellectual_author`.
+2. A `prompt_generator` MUST NOT be inferred to be the originator of the underlying idea.
+3. A missing role MUST be represented as `null` or omitted according to the schema; it MUST NOT be invented.
+4. A public artifact SHOULD preserve attribution when the underlying evidence supports it.
+
+See `docs/principles/AUTHORSHIP_AND_PROVENANCE.md`.
+
+## 4. Session
+
+A **session** is a bounded period of technical work.
+
+Recommended minimum fields:
 
 | Field | Required | Meaning |
 |---|---:|---|
-| `session_id` | yes | Stable unique identifier for the session |
+| `session_id` | yes | stable session identifier |
 | `started_at` | yes | ISO 8601 timestamp |
-| `executor` | yes | Human, CLI, agent, or model that performed the work |
-| `repository` | yes | Repository being modified |
-| `branch` | yes | Git branch used for the work |
-| `base_commit` | yes | Commit from which the session started |
+| `executor` | yes | explicitly declared executor |
+| `repository` | yes | repository or project identifier |
+| `branch` | yes | branch/ref at session start |
+| `base_commit` | yes | starting Git revision |
 
-A session may contain multiple checkpoints.
+A session MAY contain multiple checkpoints.
 
-## 3. Checkpoint
+## 5. Checkpoint
 
-A **checkpoint** is an immutable factual snapshot of the session at a meaningful boundary.
+A **checkpoint** is an immutable factual snapshot of observed technical state at a meaningful boundary.
 
-Typical checkpoint moments:
+Typical boundaries:
 
 - after a coherent change;
-- after tests;
+- after a test;
 - after a commit;
-- before handoff;
-- before stopping a long session.
+- before a handoff;
+- before a session ends;
+- after a verified external delivery event.
 
-A checkpoint MUST record:
+A checkpoint MUST distinguish:
 
-- session identity;
-- provenance;
-- work performed;
-- tests and their result;
-- Git state;
-- graph synchronization state.
+- observed facts;
+- unknown state;
+- claims that were not tested;
+- unresolved or blocked work.
 
-A checkpoint MUST NOT claim success for evidence that was not observed.
+A checkpoint MUST NOT claim that work is complete merely because an executor stopped.
 
-## 4. Provenance
+## 6. Checkpoint status
 
-**Provenance** records the causal chain behind the work.
+Public status values SHOULD include:
 
-Minimal provenance chain:
+- `complete`
+- `partial`
+- `blocked`
 
-`human → prompt generator → executor → change`
+Interpretation:
 
-Any link that did not exist MUST be represented as `null`, not invented.
+### `complete`
 
-Recommended structure:
+The evidence required by **that checkpoint boundary** is present.
+
+It does not mean the project, feature or deployment is globally finished.
+
+### `partial`
+
+Useful evidence exists, but one or more required facts are missing or unverified.
+
+### `blocked`
+
+Work cannot proceed or cannot be verified under the current conditions.
+
+## 7. Provenance
+
+Provenance records causal participation.
+
+Example:
 
 ```json
 {
   "requested_by": {"type": "human", "name": "Example User"},
-  "prompt_generator": {"type": "ai", "name": "ChatGPT"},
-  "executor": {"type": "ai_cli", "name": "Codex CLI"}
+  "intellectual_author": {"type": "human", "name": "Example Author"},
+  "prompt_generator": {"type": "ai", "name": "Example Assistant"},
+  "executor": {"type": "ai_cli", "name": "Example CLI"},
+  "verifier": {"type": "process", "name": "test-suite"}
 }
 ```
 
-Traceweave distinguishes request authority, prompt authorship, execution authorship, and evidence.
+Values MUST be explicit observations or explicit declarations.
 
-## 5. Work record
+Implementations MUST NOT infer a person's role from:
 
-A checkpoint SHOULD list the smallest useful factual description of the work.
+- Git username;
+- commit author;
+- machine username;
+- environment variable;
+- repository owner;
+- model name alone.
+
+## 8. Work record
+
+A checkpoint SHOULD describe the smallest useful factual unit of work.
+
+Example:
 
 ```json
 {
-  "summary": "Add input validation to the config loader.",
+  "summary": "Add validation for a required configuration value.",
   "files_changed": [
-    "src/config.js",
-    "tests/config.test.js"
+    "src/config.py",
+    "tests/test_config.py"
   ]
 }
 ```
 
-Do not copy an entire transcript into the checkpoint. The checkpoint is an index of verifiable facts, not a conversation archive.
+The work record is an index of evidence, not a transcript archive.
 
-## 6. Tests
+Sensitive/private content SHOULD NOT be copied into a public checkpoint when a sanitized pointer is sufficient.
 
-Each test entry records:
+## 9. Tests and runtime evidence
 
-- command;
+Each test or runtime observation SHOULD record:
+
+- what was executed or observed;
 - result;
-- optional evidence.
+- optional evidence reference;
+- timestamp when useful.
 
-Allowed result values:
+Allowed minimal test results:
 
 - `passed`
 - `failed`
 - `not_run`
 
-A checkpoint with failed tests is still valid. Traceweave records state; it does not rewrite failure as success.
+`not_run` is a valid factual result.
 
-## 7. Git state
+An implementation MUST NOT substitute `passed` for `not_run`.
 
-**Git state** identifies the exact repository revision associated with the checkpoint.
+## 10. Git state
+
+Git state identifies the repository revision represented by the checkpoint.
+
+Example:
 
 ```json
 {
@@ -129,91 +224,170 @@ A checkpoint with failed tests is still valid. Traceweave records state; it does
 }
 ```
 
-Allowed `working_tree` values:
+Recommended `working_tree` values:
 
 - `clean`
 - `dirty`
 - `unknown`
 
-If no commit was created yet, `head_commit` MAY equal `base_commit`.
+If no commit was created during the checkpoint interval, `head_commit` MAY equal `base_commit`.
 
-## 8. Graph sync
+Git state proves repository identity. It does not, by itself, prove runtime behavior or external delivery.
 
-**Graph sync** records whether the structural code graph corresponds to the checkpoint's Git state.
+## 11. Structural state
 
-Minimal states:
+A Traceweave implementation MAY record structural representations such as a code graph, dependency index or other derived model.
+
+Public minimal states:
 
 - `synced`
 - `stale`
 - `not_applicable`
 - `unknown`
 
+If a structural artifact is marked `synced`, its source revision MUST be traceable to the repository state being claimed.
+
 Example:
 
 ```json
 {
   "status": "synced",
-  "engine": "graphify",
+  "engine": "example-structural-tool",
   "source_commit": "7c91b4e",
-  "verified_at": "2026-08-21T19:43:00Z"
+  "verified_at": "2026-08-23T18:00:00Z"
 }
 ```
 
-For `synced`, `source_commit` MUST identify the same revision represented by `git.head_commit`, unless the implementation explicitly documents why it differs.
+Traceweave does not require a particular graph engine or publish a production synchronization mechanism as part of this specification.
 
-## 9. Minimal checkpoint object
+## 12. Evidence states
+
+An implementation SHOULD distinguish at least:
+
+- `confirmed` — directly supported by admissible evidence;
+- `derived` — deterministically computed from confirmed evidence;
+- `inferred` — reasoned conclusion with explicit basis;
+- `unknown` — not established;
+- `superseded` — replaced by later evidence/decision.
+
+A system MUST NOT silently convert `unknown` into `false`.
+
+A system MUST NOT silently convert `inferred` into `confirmed`.
+
+## 13. Checkpoint versus delivery proof
+
+A **checkpoint** records technical state.
+
+A **delivery proof** records that an expected delivery boundary was actually reached.
+
+Examples of delivery evidence may include:
+
+- a remote commit readback;
+- a published artifact digest;
+- a deployed version identifier;
+- a verified external state;
+- another independently inspectable receipt.
+
+A checkpoint MAY reference a delivery proof.
+
+A checkpoint MUST NOT be interpreted as delivery proof unless that relationship is explicitly recorded.
+
+The public v0.1 Reference Demonstration does not implement a production delivery-proof engine.
+
+## 14. Minimal checkpoint object
+
+An intentionally small public object may look like:
 
 ```json
 {
   "traceweave_version": "0.1",
-  "checkpoint_id": "cp-...",
+  "checkpoint_id": "cp-example",
   "session": {},
   "provenance": {},
   "work": {},
   "tests": [],
   "git": {},
-  "graph_sync": {},
-  "status": "complete"
+  "structural_state": {},
+  "status": "partial"
 }
 ```
 
-Minimal checkpoint status values:
+This example is illustrative. Public schemas may evolve through documented specification changes.
 
-- `complete`
-- `partial`
-- `blocked`
+## 15. Verification rules
 
-`complete` means the checkpoint contains the evidence required by the current session boundary. It does not mean the entire project is finished.
+A minimal public verifier SHOULD be able to check:
 
-## 10. Verification rules
+1. required identities exist;
+2. repository revisions are explicit;
+3. every claimed test has an explicit result;
+4. changed files are listed when known;
+5. provenance is explicit or unknown;
+6. derived structural state points to the claimed source revision;
+7. no unsupported claim is promoted to fact;
+8. a `complete` status is justified by the evidence required for that boundary.
 
-A minimal Traceweave consumer can verify a checkpoint with these rules:
+More advanced validation MAY exist outside the public reference implementation.
 
-1. `session_id` and `checkpoint_id` exist.
-2. `base_commit` and `head_commit` are recorded.
-3. Every claimed test has an explicit result.
-4. Every changed file is listed.
-5. Provenance links are explicit or `null`.
-6. If `graph_sync.status == "synced"`, the graph revision matches the Git revision being claimed.
-7. No unsupported claim is promoted to fact.
+## 16. Reconstruction
 
-## 11. What version 0.1 does not define
+A valid Traceweave trail should allow a later reviewer to follow a path such as:
 
-Version `0.1` intentionally does not define:
+```text
+checkpoint
+→ repository revision
+→ changed files
+→ tests/runtime evidence
+→ provenance
+→ optional delivery proof
+```
 
-- a database;
-- a daemon;
-- a GitHub App;
-- a specific AI provider;
-- a graph format;
-- a transcript format;
-- a cloud service.
+The graph or index is a navigator.
 
-The minimal protocol only defines enough structure for one session to leave a verifiable continuity record.
+The underlying evidence remains the basis for confirmation.
 
-## 12. Example
+## 17. Open specification versus implementation
+
+The following are part of the **open protocol surface**:
+
+- evidence semantics;
+- provenance roles;
+- identity relationships;
+- checkpoint semantics;
+- public status values;
+- reconstruction principles;
+- governance and publication rules;
+- deliberately limited examples.
+
+The following are **not required to be open-source implementations**:
+
+- production orchestration;
+- complete adapters;
+- automated ingestion engines;
+- advanced validation systems;
+- differentiating algorithms or heuristics;
+- private infrastructure;
+- commercial product integrations.
+
+## 18. Reference Demonstration v0.1
+
+The public Python implementation is deliberately constrained.
+
+Its purpose is to demonstrate that a small executable implementation can:
+
+- read Git state without mutation;
+- create explicit factual checkpoints;
+- preserve null provenance;
+- represent tests as `not_run`;
+- validate basic structure.
+
+It should not be interpreted as the complete Traceweave product architecture.
+
+## 19. Public examples
 
 See:
 
-- [`examples/checkpoint.json`](examples/checkpoint.json)
-- [`examples/session-flow.md`](examples/session-flow.md)
+- `examples/checkpoint.json`
+- `examples/session-flow.md`
+- `docs/method/ENGINEERING_METHOD.md`
+- `docs/principles/EVIDENCE_PRINCIPLES.md`
