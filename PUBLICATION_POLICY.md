@@ -1,95 +1,165 @@
 # Traceweave Publication Policy
 
-> Public knowledge. Demonstrable engineering. Protected implementation.
-
 ## Purpose
 
-Traceweave documents a way of conducting AI-assisted engineering so that intent, decisions, execution, evidence, verification, and continuity remain distinguishable and auditable.
+This policy defines what belongs in the public Traceweave repository and what should remain private or commercial.
 
-The public project is intended to explain the method, expose its principles, document observable results, and provide small educational examples without publishing the implementation that constitutes the commercial product.
+The goal is:
 
-## Publication classes
+> **Public knowledge. Demonstrable engineering. Protected implementation.**
 
-Every candidate artifact should be classified before publication.
+## 1. Publication classes
 
 ### PUBLIC
 
-Suitable for open publication:
+Suitable for direct publication:
 
-- engineering principles and methodology;
+- protocol semantics;
+- engineering principles;
+- governance;
 - conceptual architecture;
-- provenance and evidence models;
-- session lifecycle and checkpoint concepts;
-- governance rules;
-- sanitized diagrams;
-- limitations and lessons learned;
-- case studies whose publication does not expose protected mechanisms.
+- schemas deliberately designed for interoperability and safe public reproduction, after case-by-case review;
+- evidence rules;
+- public research notes supported by publishable evidence;
+- sanitized educational examples.
 
-### PUBLIC — SANITIZED
+### PUBLIC_SANITIZED
 
-Material that is useful publicly only after removing:
+Useful material that can be published after removing or generalizing:
 
-- private infrastructure names and topology;
-- credentials, tokens, paths, endpoints, internal identifiers, and private data;
-- implementation-specific algorithms, formulas, heuristics, weights, and operational details;
-- details that would allow reconstruction of a protected mechanism.
+- private infrastructure;
+- internal repository paths;
+- private identifiers;
+- sensitive transcript content;
+- customer/user data;
+- environment-specific operational detail.
 
-### SIMPLE DEMO
+Sanitization MUST NOT change the technical meaning of the evidence being claimed.
 
-Small code examples may be public when their purpose is educational or demonstrative and they do not reproduce the commercial implementation.
+### REFERENCE_DEMO
 
-A public demo should prove a concept, not deliver the product.
+Small, intentionally limited implementation that proves a public concept without delivering the commercial system.
 
-### PRIVATE / COMMERCIAL
+The current Python v0.1 implementation belongs in this class.
 
-Not intended for open publication:
+### PRIVATE_COMMERCIAL
 
-- production engines and substantial source code;
-- complete operational automation;
-- proprietary algorithms and heuristics;
-- implementation-level graph engines, validators, adapters, orchestration, and integrations;
-- internal formulas, ranking logic, weights, or other differentiating mechanisms;
-- anything that materially enables reproduction of the commercial implementation.
+Not intended for publication by default:
 
-## Restricted topics
+- production orchestration engines;
+- complete operational adapters;
+- automatic evidence-ingestion systems;
+- proprietary validation engines;
+- differentiating algorithms;
+- unpublished heuristics, formulas or weights;
+- private infrastructure integrations;
+- commercial product internals.
 
-Certain internal mechanisms belong to other projects or protected research fronts. Their presence in development history does not make them part of Traceweave.
+## 1.1 Schema classification
 
-Material associated with restricted internal mechanisms must not be published as Traceweave architecture, implementation, documentation, examples, schemas, posts, or videos unless it has been separately reviewed and explicitly approved for release.
+Schemas are **not PUBLIC by default**.
 
-Even when approved, publication must disclose only the minimum necessary concept and must not expose internal purpose, architecture, dimensions, formulas, weights, contracts, implementation details, or operational relationships.
+A schema may be published as `PUBLIC` when it is intentionally minimal, conceptual or interoperability-oriented and does not materially enable reconstruction of protected product behavior.
 
-## Public evidence rule
+A schema should be classified as `PUBLIC_SANITIZED` or `PRIVATE_COMMERCIAL` when its completeness, fields, relationships or validation rules materially expose:
 
-A public claim should be no stronger than its evidence.
+- production architecture;
+- proprietary workflows;
+- differentiating validation logic;
+- private integration contracts;
+- data structures that substantially lower the cost of reproducing the commercial implementation.
 
-Prefer:
+Schema publication is therefore a **case-by-case decision**, not a blanket category.
 
-- observed;
-- measured;
-- verified;
-- prototype;
-- experimental;
-- designed;
-- implemented in the reference demonstration.
+## 2. Existing public v0.1
 
-Avoid unsupported claims such as "production ready", "world first", or performance claims without publishable measurement.
+The already-published v0.1 source remains public under its existing license.
 
-## Code rule
+This policy does not retroactively revoke rights already granted to published material.
 
-The public repository may contain simple reference code. Public source code is not the definition of the complete Traceweave product.
+The public v0.1 should be described as:
 
-When an implementation crosses from explanation into reusable commercial capability, it should remain private or be distributed under the applicable commercial terms.
+> **Traceweave Reference Demonstration v0.1**
 
-## Review gate
+It should not be used as an implicit promise that future production capability will be published openly.
 
-Before publication, ask:
+## 3. Protected-content gate
 
-1. Does this explain the method without unnecessarily revealing the mechanism?
-2. Does it contain private infrastructure or information from another project?
-3. Could the material substantially reproduce a protected implementation?
-4. Are all factual claims supported by evidence that can itself be published?
-5. Is any code intentionally simple and demonstrative?
-6. Is authorship/provenance represented accurately?
+Before publishing a new artifact, reject, move private, or sanitize it if it:
 
-If any answer creates doubt, classify the artifact as PRIVATE / COMMERCIAL until reviewed.
+- exposes credentials, secrets or private endpoints;
+- contains private filesystem paths or infrastructure identifiers;
+- exposes private project data;
+- reveals implementation-specific mechanisms that reconstruct protected commercial behavior;
+- publishes proprietary formulas, weights, heuristics or differentiating algorithms;
+- turns an educational example into reusable production capability unintentionally;
+- makes a factual or performance claim without publishable evidence;
+- attributes intellectual authorship to an executor without evidence.
+
+## 4. Documentation rule
+
+Public documentation MAY explain:
+
+- what the protocol means;
+- why a rule exists;
+- what evidence is required;
+- what a sanitized example demonstrates;
+- what the public reference demo does.
+
+Public documentation SHOULD NOT imply that private production implementation will later be released unless that publication has been explicitly approved.
+
+## 5. Code rule
+
+Public code should remain:
+
+- small enough to inspect;
+- intentionally bounded;
+- testable;
+- safe to publish;
+- independent of private infrastructure.
+
+A feature that materially increases commercial capability should be evaluated as a separate private/commercial implementation rather than automatically added to the reference demo.
+
+## 6. Examples and case studies
+
+Public examples should use:
+
+- fictitious repositories;
+- fictitious names where possible;
+- sanitized identifiers;
+- non-sensitive test data;
+- evidence that can be reproduced publicly.
+
+A case study must distinguish:
+
+- observed fact;
+- deterministic derivation;
+- inference;
+- unknown state.
+
+## 7. Public claims
+
+A public claim about performance, correctness, security or behavior should identify its evidence.
+
+Do not publish:
+
+> “Traceweave guarantees X”
+
+when the available evidence only supports:
+
+> “In this documented test, X was observed.”
+
+## 8. Release review
+
+Before merge/publication, answer:
+
+1. Is the artifact public by design?
+2. Does it reveal a private mechanism?
+3. Does it contain secrets, private paths, endpoints or identifiers?
+4. Could it materially lower the cost of reproducing commercial capability?
+5. Are claims no stronger than the publishable evidence?
+6. Are authorship and execution roles represented accurately?
+7. If the artifact is a schema, has it been explicitly classified after case-by-case review?
+8. Has a human maintainer approved publication?
+
+If any answer creates doubt, classify the artifact as `PRIVATE_COMMERCIAL` until reviewed.
