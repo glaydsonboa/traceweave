@@ -1,121 +1,181 @@
 # Traceweave
 
-> **Verifiable continuity and provenance for AI coding agents.**
+> **Verifiable continuity and provenance for AI-assisted engineering.**
 
-Traceweave is a protocol and tooling direction for preserving continuity across AI-assisted coding sessions by linking session state, provenance, technical checkpoints, Git history, execution evidence and structural code-graph synchronization.
+Traceweave is an open protocol and engineering method for preserving verifiable continuity across AI-assisted software work.
 
-AI coding sessions frequently lose operational context between executions. Reports, commits, prompts, transcripts and structural state can diverge. Traceweave treats that continuity as an engineering problem rather than relying on conversational memory alone.
+It separates what was requested, what was inferred, what was executed, what was observed, what was committed and what was actually verified.
 
-## Problem
+The public project documents the protocol, method, evidence rules, governance, selected interoperability material and an intentionally limited reference demonstration.
 
-Long-running AI-assisted software engineering creates state across multiple layers: human intent, prompts, model actions, tool execution, tests, Git history and structural representations of the codebase.
+Production orchestration, advanced automation and implementation-specific commercial capability may be developed and distributed separately.
 
-When those layers drift apart, a later agent or session may know *what was said* without being able to verify *what actually happened*.
+## Why Traceweave exists
 
-Traceweave is designed to make that operational history inspectable and recoverable.
+Long-running AI-assisted engineering creates state across multiple layers:
 
-## Approach
+- human intent;
+- prompts and instructions;
+- model or agent actions;
+- tool execution;
+- tests;
+- repository state;
+- derived structural state;
+- reports and checkpoints.
 
-The core continuity loop is:
+Those layers can disagree.
 
-```text
-session → provenance → execution → tests → Git → graph synchronization → checkpoint
-```
+A later session may know what a previous session *said* without being able to verify what actually happened.
 
-Instead of treating a chat transcript or commit as sufficient evidence, Traceweave connects execution state to verifiable artifacts and explicit checkpoints.
+Traceweave treats that gap as an engineering problem.
 
-## Architecture
+## Core principle
 
-A Traceweave workflow is organized around a small set of contracts:
+> **Narrative memory is not evidence.**
 
-1. **Session start** — recover the last verified technical state before new work begins.
-2. **Provenance** — preserve the chain between human intent, model reasoning context, executor actions and resulting mutations.
-3. **Execution evidence** — record relevant commands, tests and outcomes rather than relying only on generated summaries.
-4. **Git linkage** — associate verified work with repository state and commits.
-5. **Graph synchronization** — keep structural code representations aligned with verified Git changes.
-6. **Checkpoint** — leave a compact, inspectable state for the next session or agent.
+A useful continuity record should allow a later human or agent to reconstruct the strongest available technical state from inspectable evidence.
 
-## Core ideas
-
-- session start and stop contracts
-- human / model / executor provenance
-- Git-linked execution evidence
-- sanitized session transcripts
-- checkpointed technical journals
-- code-graph synchronization
-- push guards against stale structural state
-
-## Provenance model
-
-A canonical execution chain can be represented as:
+A minimal conceptual chain is:
 
 ```text
-human → prompt-generating AI → executing AI/CLI → mutation → test → commit → evidence
+request
+→ provenance
+→ execution
+→ evidence
+→ test/runtime observation
+→ Git state
+→ checkpoint
+→ next session
 ```
 
-The goal is not to preserve every token produced by an AI system. The goal is to preserve enough evidence to establish where a change came from, what executed it, how it was validated and which repository state resulted from it.
+Optional structural representations may help navigation, but they do not replace source or runtime evidence.
 
-## Example lifecycle
+## What Traceweave publishes
+
+The public repository is intended to contain:
+
+- protocol semantics;
+- engineering principles;
+- governance;
+- conceptual architecture;
+- public schemas only when they are deliberately safe to publish after case-by-case review;
+- sanitized examples and case studies;
+- evidence-led documentation;
+- the intentionally limited **Traceweave Reference Demonstration v0.1**.
+
+Public documentation explains the method and protocol. It is not a commitment to publish every production implementation.
+
+See [`PUBLICATION_POLICY.md`](PUBLICATION_POLICY.md).
+
+## What Traceweave does not imply
+
+An open protocol does not imply that every implementation is open source.
+
+A public reference demonstration does not imply that production engines, adapters, orchestration, automatic evidence ingestion, advanced validators or private integrations will be released in this repository.
+
+See [`LICENSING.md`](LICENSING.md).
+
+## Engineering method
+
+A public Traceweave workflow favors:
 
 ```text
-START SESSION
+BOUNDED INTENT
     ↓
-Recover last checkpoint
+CURRENT STATE
     ↓
-Inspect Git + structural state
+HYPOTHESIS
     ↓
-Define bounded change
+ADVERSARIAL / FOCUSED TEST
     ↓
-Execute
+PROVEN CAUSE OR REJECTED HYPOTHESIS
     ↓
-Validate / test
+MINIMAL SAFE CHANGE
     ↓
-Commit verified state
+REGRESSION / RUNTIME EVIDENCE
     ↓
-Synchronize code graph
+GIT STATE
     ↓
-Write checkpoint
-    ↓
-STOP SESSION
+CHECKPOINT / HANDOFF
 ```
 
-## Key properties
+This is not a requirement that every task use the same tooling.
 
-**Verifiable** — conclusions should be backed by execution evidence.
+It is a discipline for keeping claims tied to evidence.
 
-**Git-aware** — continuity is tied to concrete repository state rather than narrative memory alone.
+See [`docs/method/ENGINEERING_METHOD.md`](docs/method/ENGINEERING_METHOD.md).
 
-**Agent-compatible** — the protocol is intended for workflows involving coding agents, CLIs and multiple models.
+## Evidence principles
 
-**Inspectable** — orchestration and provenance should remain understandable to a human operator.
+Traceweave public documentation follows several rules:
 
-**Minimal-impact** — agents should determine the smallest safe change path before mutation when structural information is available.
+- evidence before conclusion;
+- unknown is not false;
+- missing evidence is not a fact;
+- runtime evidence can supersede stale narrative;
+- a commit is not delivery proof;
+- a checkpoint is not project completion;
+- failure is evidence;
+- inference remains labeled as inference;
+- provenance is part of the technical record.
 
-## Engineering principles
+See [`docs/principles/EVIDENCE_PRINCIPLES.md`](docs/principles/EVIDENCE_PRINCIPLES.md).
 
-- Evidence before conclusion.
-- Minimal-impact changes.
-- Provenance is part of the implementation.
-- Runtime behavior outranks documentation.
-- Security must preserve operational continuity.
-- A commit is not proof until the resulting system is verified.
-- AI orchestration must remain inspectable.
+## Authorship and provenance
 
-## Status
+AI-assisted engineering often involves different contributors performing different roles.
 
-**Prototype / early specification.**
+Traceweave distinguishes, when known:
 
-Traceweave currently describes an engineering direction and protocol. Interfaces, schemas and reference tooling will evolve as reproducible implementations are published.
+- request authority;
+- intellectual authorship;
+- prompt or instruction generation;
+- execution;
+- verification;
+- publication.
 
-It should not be interpreted as production-ready software at this stage.
+Execution does not automatically imply intellectual authorship.
 
-## Reference implementation — version 0.1
+Prompt generation does not automatically imply intellectual authorship.
 
-A minimal, inspectable CLI that implements the protocol above. It is intentionally
-small: Python standard library only, no dependencies, no daemon, no database, no
-network calls.
+Unknown roles remain unknown rather than being inferred from names or Git metadata.
 
-### Installation
+See [`docs/principles/AUTHORSHIP_AND_PROVENANCE.md`](docs/principles/AUTHORSHIP_AND_PROVENANCE.md).
+
+## Specification
+
+The open specification defines protocol semantics and public evidence expectations.
+
+It does not define or license unpublished commercial implementation.
+
+See [`SPEC.md`](SPEC.md).
+
+## Governance
+
+Protocol and publication changes are subject to explicit maintainer approval, evidence review and the public/private boundary.
+
+See [`GOVERNANCE.md`](GOVERNANCE.md).
+
+---
+
+# Traceweave Reference Demonstration v0.1
+
+The existing Python implementation is an intentionally small, inspectable demonstration of a subset of the public protocol.
+
+It uses:
+
+- Python standard library only;
+- local read-only Git inspection;
+- explicit/null provenance;
+- factual checkpoint generation;
+- structural checkpoint verification;
+- no daemon;
+- no database;
+- no network calls.
+
+It should be read as **proof that the public concepts can be made executable**, not as the complete Traceweave product.
+
+## Installation
 
 ```bash
 git clone https://github.com/glaydsonboa/traceweave.git
@@ -125,99 +185,77 @@ python -m pip install -e .
 
 Requires Python 3.11+ and a local Git installation.
 
-### Usage
+## Create a checkpoint
 
-Inside any Git repository:
+Inside a Git repository:
 
 ```bash
 traceweave checkpoint \
   --summary "Add configuration validation" \
-  --executor "DeepSeek"
+  --executor "Example Coding CLI" \
+  --requested-by "Example Maintainer" \
+  --prompt-generator "Example Assistant"
 ```
 
-This inspects the repository with read-only Git commands and writes a checkpoint to:
+The demonstration inspects the repository with read-only Git commands and writes a checkpoint to:
 
 ```text
 .traceweave/checkpoints/<checkpoint_id>.json
 ```
 
-The first checkpoint also creates the session record at `.traceweave/session.json`;
-later checkpoints reuse the same session and base commit.
+The first checkpoint also creates:
 
-Supported options:
+```text
+.traceweave/session.json
+```
 
-| Option | Meaning |
-|---|---|
-| `--summary` | one-line description of the work performed |
-| `--executor` | human, CLI, agent or model that performed the work (required by SPEC.md §2) |
-| `--requested-by` | who or what requested the work |
-| `--prompt-generator` | who or what generated the instruction |
-| `--session-id` | stable session identifier (default: auto-created and persisted) |
-| `--base-commit` | commit from which the session started (default: session base or current HEAD) |
-| `--graph-status` | `unknown` (default) or `not_applicable` — `synced`/`stale` are reserved for a future graph integration |
-| `--path` | repository path to inspect (default: current directory) |
+Unknown provenance values are recorded as `null` rather than inferred.
 
-Any provenance option that is not provided is recorded as `null` — never inferred
-from Git username, commit author, environment variables or repository metadata.
-
-Provenance names are the explicit values supplied on the command line. The CLI
-never infers an actor type or a causal role from a name: each provenance link
-records `{"type": null, "name": "<explicit name>"}` and no `chain` field is
-generated.
-
-Verify a checkpoint:
+## Verify a checkpoint
 
 ```bash
 traceweave verify .traceweave/checkpoints/<checkpoint_id>.json
 ```
 
-Exits `0` when the checkpoint passes, non-zero when it fails. Verification covers:
-session and checkpoint ids, `base_commit`/`head_commit`, explicit test results,
-explicit-or-null provenance links, and `graph_sync.source_commit == git.head_commit`
-whenever `graph_sync.status` is `synced`.
+The v0.1 verifier checks structural consistency of the checkpoint artifact.
 
-### What version 0.1 intentionally does not do
+It does not claim to be a production evidence-verification engine.
 
-- it does **not** commit, push, checkout, reset, clean or rebase — only read-only Git commands;
-- it does **not** collect secrets, tokens, environment variable values, transcripts or arbitrary file contents;
-- it does **not** integrate Graphify — `graph_sync` supports only `not_applicable` and `unknown` (default);
-- it does **not** ingest test results automatically — when no test was run, `tests` is one explicit entry `{"command": null, "result": "not_run", "evidence": null}`, never an invented pass;
-- generated checkpoints default to `"status": "partial"` — the CLI does **not** promote a checkpoint to `complete` without sufficient evidence (all `complete`/`partial`/`blocked` values from SPEC.md remain supported by the protocol);
-- it does **not** make network requests or send telemetry.
+## What v0.1 intentionally does not do
 
-### Minimal runnable example
+The Reference Demonstration v0.1 does **not**:
 
-```bash
-mkdir /tmp/tw-demo && cd /tmp/tw-demo
-git init -q && git config user.email demo@example.com && git config user.name Demo
-echo "config" > app.txt && git add . && git commit -qm init
+- commit, push, checkout, reset, clean or rebase;
+- collect secrets, tokens or arbitrary file contents;
+- make network requests;
+- ingest test results automatically;
+- provide production orchestration;
+- provide a production structural graph engine;
+- provide automatic delivery verification;
+- implement private/commercial integrations.
 
-traceweave checkpoint \
-  --summary "Add configuration validation" \
-  --executor "DeepSeek" \
-  --requested-by "Glaydson" \
-  --prompt-generator "ChatGPT"
+Generated checkpoints default to `partial` because the demo does not automatically observe enough evidence to promote them to a stronger boundary.
 
-traceweave verify .traceweave/checkpoints/*.json
-```
+## Public example
 
-## Limitations
+See [`examples/session-flow.md`](examples/session-flow.md) for a fictitious end-to-end protocol example that distinguishes local Git state from external delivery proof.
 
-- The protocol and artifact schemas are not yet stable.
-- The version 0.1 reference implementation is minimal — tests are not auto-ingested and graph integration is absent by design.
-- Code-graph integration depends on the structural tooling used by a project.
-- Provenance quality ultimately depends on what executors and surrounding infrastructure can observe and record.
+## Tests
 
-## Roadmap
+The repository includes tests for the public v0.1 behavior.
 
-- Define the minimal session/checkpoint schema.
-- Publish a reference directory and journal format.
-- Define Git-linked provenance records.
-- Add an executable session start/stop example.
-- Demonstrate code-graph synchronization after verified changes.
-- Add validation and stale-state guards.
-- Publish a reproducible end-to-end example.
+They exist to make the reference demonstration inspectable and to prevent its documented behavior from silently drifting.
+
+## Status
+
+The public protocol and documentation are evolving.
+
+The Reference Demonstration v0.1 is intentionally limited and should not be interpreted as production-ready software.
+
+Future public material will be evaluated against the publication boundary before release.
 
 ## License
 
-Licensed under the [Apache License 2.0](LICENSE).
+Material already released in this repository remains under the repository's Apache License 2.0 terms.
+
+See [`LICENSE`](LICENSE) and [`LICENSING.md`](LICENSING.md) for scope clarification.
