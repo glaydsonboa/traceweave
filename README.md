@@ -104,6 +104,8 @@ The project is also exploring small adjacent tools that preserve the same eviden
 
 - [Continuity-first positioning](docs/continuity/TRACEWEAVE_POSITIONING.md)
 - [Protocol specification](SPEC.md)
+- [Model interoperability recipes](docs/model-interop/README.md)
+- [Multi-model prompt pipeline](docs/model-interop/PROMPT_PIPELINE.md)
 - [Examples](examples/)
 
 ## Status

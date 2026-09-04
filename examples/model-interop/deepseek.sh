@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+: "${DEEPSEEK_API_KEY:?Set DEEPSEEK_API_KEY first.}"
+
+PROJECT="${1:-.}"
+DEEPSEEK_MODEL="${DEEPSEEK_MODEL:-deepseek-v4-pro}"
+
+export ANTHROPIC_BASE_URL="https://api.deepseek.com/anthropic"
+export ANTHROPIC_AUTH_TOKEN="$DEEPSEEK_API_KEY"
+
+export ANTHROPIC_MODEL="$DEEPSEEK_MODEL"
+export ANTHROPIC_DEFAULT_OPUS_MODEL="$DEEPSEEK_MODEL"
+export ANTHROPIC_DEFAULT_SONNET_MODEL="$DEEPSEEK_MODEL"
+export ANTHROPIC_DEFAULT_HAIKU_MODEL="$DEEPSEEK_MODEL"
+
+cd "$PROJECT"
+exec claude
