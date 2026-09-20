@@ -108,7 +108,7 @@ Message 163:
 sender: assistant
 UTC: 2026-08-18T16:57:43.358133Z
 UUID: 01a015ce-6d59-7b7f-93c2-6e7a8506857d
-text SHA-256: 65b9bb3e79e41e91f56f5c7126c143b7e7a8506857d
+text SHA-256: 65b9bb3e79e41e91f56f5c7126c143b7e7ea09f7d5f85e6e6d0d2db65b17ea07
 ```
 
 The export text for this message identifies a broader Anthropic degradation and concludes:
@@ -125,14 +125,6 @@ assistant formalization
 live provider failure
         ↓
 assistant recommends applying the already-established direction
-```
-
-### Hash correction note
-
-The message UUID and timestamp above are the stable locators. The full text SHA-256 preserved in the extracted evidence record is:
-
-```text
-65b9bb3e79e41e91f56f5c7126c143b7e7ea09f7d5f85e6e6d0d2db65b17ea07
 ```
 
 ## Three Fable documents are preserved in the same Claude.ai corpus
