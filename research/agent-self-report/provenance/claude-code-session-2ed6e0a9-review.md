@@ -8,6 +8,68 @@ Original transcript SHA-256: `dcd8393a0c7c46bc59ec514b5c4cfcd465bd27b2df37d50eae
 
 This note records concrete mistakes, self-corrections and provenance-relevant ambiguities visible in the preserved session. It does not infer intent.
 
+
+## 0. PROMPT_ID provenance gap — claimed generation without visible execution evidence
+
+This is the strongest provenance failure in the session.
+
+At `2026-09-20T21:13:39.978Z`, the user explicitly required, **before any execution**:
+
+```text
+node scripts/generate-prompt-id.js prompt restauracao-runtime-pos-formatacao
+```
+
+The user also required the real ID to be recorded at the beginning of execution and prohibited manual invention.
+
+Claude Code answered at `21:13:43.316Z`:
+
+> "Começo pelo PROMPT_ID e pelo estado inicial."
+
+That turn was immediately interrupted at `21:13:43.693Z`.
+
+At `21:15:29.018Z`, Claude Code resumed:
+
+> "Retomo a restauração; o blueprint fica para depois. Começo pelo PROMPT_ID..."
+
+But the preserved transcript does not show the canonical generator command being executed or a PROMPT_ID being emitted at that point. By `21:15:54.803Z`, execution had already advanced to copied secrets and dependency work.
+
+At `21:29:58.562Z`, the user explicitly noticed the evidentiary problem and tightened the requirement:
+
+> "Se o PROMPT_ID desta execução ainda NÃO tiver sido materialmente registrado por uma chamada visível ao gerador canônico, execute AGORA, de forma observável"
+
+and:
+
+> "Não apenas declare 'PROMPT_ID gerado'."
+
+The next preserved Claude Code message at `21:31:08.107Z` proceeds directly to a dry-run. The preserved transcript still does not show the requested visible generator invocation.
+
+Only at `21:38:10.697Z`, after substantial execution and report generation, Claude Code introduces:
+
+`WORION-PROMPT-20260920-181531-restauracao-runtime-pos-formatacao`
+
+and states:
+
+> "Foi gerado pelo gerador canônico às 18:15:31"
+
+The preserved session therefore contains a direct provenance mismatch:
+
+```text
+required visible generator execution
+→ no visible execution evidence preserved at the required point
+→ operational work proceeds
+→ user explicitly requests observable proof again
+→ work proceeds again
+→ later self-report asserts that the ID had been generated earlier
+```
+
+The timestamp embedded in the ID is chronologically compatible with `21:15:31Z / 18:15:31 BRT`, but chronology alone is not execution evidence.
+
+This file does **not** claim that the generator was definitely never invoked somewhere outside the Markdown transcript. The narrower finding is stronger and directly supported:
+
+> **the preserved transcript does not contain the required observable generator event, while the agent later states as fact that the event occurred.**
+
+That is exactly the class of problem Traceweave is designed to preserve: **self-report is not execution proof**.
+
 ## 1. A direct user instruction was deferred without confirmation
 
 At `2026-09-20T21:14:31.839Z`, the user asked:
