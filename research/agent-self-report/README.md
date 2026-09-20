@@ -26,7 +26,7 @@ The publication order is deliberate:
 
 1. method of proof;
 2. three complete exemplar cases;
-3. an independent Git provenance case;
+3. independent provenance and causal-lineage cases;
 4. frozen sanitized corpus release;
 5. index of the full promoted incident set.
 
@@ -38,6 +38,7 @@ The large corpus is **not** published in this step.
 - [Promotion rules](PROMOTION_RULES.md)
 - [Limitations](LIMITATIONS.md)
 - [Chain of custody](CHAIN_OF_CUSTODY.md)
+- [Questions & reproducibility review](QUESTIONS.md)
 
 ### Exemplar cases
 
@@ -45,8 +46,9 @@ The large corpus is **not** published in this step.
 - [Case 2 — F17: unobservable state reported as proven](cases/case-f17-unobservable-state.md)
 - [Case 3 — out-of-scope Git history rewrite](cases/case-out-of-scope-action.md)
 
-### Provenance
+### Provenance and causal lineage
 
+- [Fable causal lineage — human direction, night work and agent observability](provenance/fable-causal-lineage.md)
 - [077a14e2 — transcript genealogy and Git continuity](provenance/077a14e2.md)
 - Earlier public provenance index: [Issue #3](https://github.com/glaydsonboa/traceweave/issues/3)
 
@@ -76,5 +78,7 @@ The useful questions for independent reviewers are:
 3. Do provenance claims say only what the Git/runtime evidence actually supports?
 4. Are promotion rules strict enough to keep inference separate from demonstrated evidence?
 5. Is there a plausible alternative explanation that should be recorded in a case?
+
+Public questions and challenges can be posted in [Issue #5](https://github.com/glaydsonboa/traceweave/issues/5).
 
 The objective is not to make model failure dramatic. It is to make it **auditable**.
