@@ -2,74 +2,74 @@
 'use strict';
 
 /**
- * @file Gerador canonico e universal de IDs do Worion.
- * @contract WORION-PROMPT-ID-GEN-001
- * @status active
- * @provenance IA EXECUTORA: DeepSeek V4 (harness Claude Code)
- * @provenance RESPONSE_TO_PROMPT_ID: GPTSOL-DEEPSEEK-RECONSTRUCAO-START-20260823-1000
- * @provenance AUTORIA INTELECTUAL: Glaydson (doc/03 §0 + cadeia de IDs do contrato vigente)
+ * Neutral provenance identity-chain generator.
  *
- * Cadeia vigente (contracts/PROMPT_EXECUTION_PROVENANCE_CONTRACT.md):
+ * Public derivative of a historical source artifact. The historical source
+ * identity is preserved in the provenance record; this file intentionally
+ * removes system-specific names and contract references.
  *
- *   COMMAND_ID → PROMPT_ID → EXECUTION_ID → RESPONSE_ID → ARTIFACT_ID / EVENT_ID → commit/resultado
+ * Chain:
+ *   COMMAND_ID → PROMPT_ID → EXECUTION_ID → RESPONSE_ID → ARTIFACT_ID / EVENT_ID
  *
- * Formatos canonicos (mesmo contrato):
+ * Formats:
+ *   PROV-CMD-AAAAMMDD-HHMMSS-<slug>     (command)
+ *   PROV-PROMPT-AAAAMMDD-HHMMSS-<slug>  (prompt)
+ *   PROV-EXEC-AAAAMMDD-HHMMSS-<slug>    (execution)
+ *   PROV-RESP-AAAAMMDD-HHMMSS-<slug>    (response)
+ *   PROV-ART-AAAAMMDD-HHMMSS-<slug>     (artifact)
+ *   PROV-EVT-AAAAMMDD-HHMMSS-<slug>     (event)
  *
- *   WORION-CMD-AAAAMMDD-HHMMSS-<slug-curto>     (command)
- *   WORION-PROMPT-AAAAMMDD-HHMMSS-<slug-curto>  (prompt)
- *   WORION-EXEC-AAAAMMDD-HHMMSS-<slug-curto>    (execution)
- *   WORION-RESP-AAAAMMDD-HHMMSS-<slug-curto>    (response)
- *   WORION-ART-AAAAMMDD-HHMMSS-<slug-curto>     (artifact)
- *   WORION-EVT-AAAAMMDD-HHMMSS-<slug-curto>     (event)
+ * Properties:
+ * - deterministic format;
+ * - America/Sao_Paulo timestamp, preserving source behavior;
+ * - sanitized purpose slug;
+ * - zero model and zero network;
+ * - collision check against the current Git repository when available.
  *
- * Regras:
- * - horario real de America/Sao_Paulo;
- * - slug curto de finalidade, sanitizado (minusculas, sem acento, hifens);
- * - determinista quanto ao formato, unico quanto ao valor;
- * - nao reutiliza ID ja existente no repositorio (confere com git grep);
- * - zero modelo, zero rede;
- * - chamavel por Claude Code, Codex, DeepSeek ou qualquer executor.
- *
- * Uso CLI (compativel com a versao anterior + interface universal):
- *   node scripts/generate-prompt-id.js <slug>                 # tipo default: prompt
- *   node scripts/generate-prompt-id.js <tipo> <slug>          # command|prompt|execution|response|artifact|event
- *   node scripts/generate-prompt-id.js prompt "reconstrucao-linha-do-tempo"
- *
- * Uso programatico (testavel):
- *   const { generatePromptId, generateWorionId, TYPES } = require('./scripts/generate-prompt-id.js');
- *   generatePromptId('meu-slug');                        // prompt, agora, America/Sao_Paulo
- *   generatePromptId('meu-slug', { nowMs });             // tempo fixo para teste
- *   generateWorionId('artifact', 'linha-do-tempo', { nowMs });
+ * CLI:
+ *   node identity-chain-generator.js <slug>                 # prompt
+ *   node identity-chain-generator.js <type> <slug>          # explicit type
  */
 
 const { spawnSync } = require('node:child_process');
 const path = require('node:path');
 
-const ROOT = path.resolve(__dirname, '..');
+const TYPES = Object.freeze({
+  command: 'PROV-CMD',
+  prompt: 'PROV-PROMPT',
+  execution: 'PROV-EXEC',
+  response: 'PROV-RESP',
+  artifact: 'PROV-ART',
+  event: 'PROV-EVT',
+});
 
-// Tipos canonicos da cadeia de IDs (contrato vigente).
-const TYPES = {
-  command: 'WORION-CMD',
-  prompt: 'WORION-PROMPT',
-  execution: 'WORION-EXEC',
-  response: 'WORION-RESP',
-  artifact: 'WORION-ART',
-  event: 'WORION-EVT',
-};
-const TYPE_ALIASES = {
+const TYPE_ALIASES = Object.freeze({
   cmd: 'command',
   exec: 'execution',
   resp: 'response',
   art: 'artifact',
   evt: 'event',
-  event: 'event',
-  artifact: 'artifact',
-  response: 'response',
-  execution: 'execution',
   command: 'command',
   prompt: 'prompt',
-};
-const FORMAT_PREFIX = TYPES.prompt;
+  execution: 'execution',
+  response: 'response',
+  artifact: 'artifact',
+  event: 'event',
+});
+
+function resolveRepositoryRoot(startDir = __dirname) {
+  const result = spawnSync('git', ['rev-parse', '--show-toplevel'], {
+    cwd: startDir,
+    encoding: 'utf8',
+    windowsHide: true,
+    timeout: 15000,
+  });
+  if (!result.error && result.status === 0) {
+    const root = String(result.stdout || '').trim();
+    if (root) return path.resolve(root);
+  }
+  return path.resolve(process.cwd());
+}
 
 function saoPauloParts(nowMs) {
   const fmt = new Intl.DateTimeFormat('en-CA', {
@@ -82,7 +82,9 @@ function saoPauloParts(nowMs) {
     second: '2-digit',
     hour12: false,
   });
-  const parts = Object.fromEntries(fmt.formatToParts(new Date(nowMs)).map((p) => [p.type, p.value]));
+  const parts = Object.fromEntries(
+    fmt.formatToParts(new Date(nowMs)).map((part) => [part.type, part.value]),
+  );
   return {
     date: `${parts.year}${parts.month}${parts.day}`,
     time: `${parts.hour}${parts.minute}${parts.second}`,
@@ -90,91 +92,88 @@ function saoPauloParts(nowMs) {
 }
 
 function sanitizeSlug(raw) {
-  const base = String(raw || '')
+  const slug = String(raw || '')
     .normalize('NFD')
-    .replace(/[̀-ͯ]/g, '')
+    .replace(/[\u0300-\u036f]/g, '')
     .toLowerCase()
     .replace(/[^a-z0-9]+/g, '-')
     .replace(/^-+|-+$/g, '')
     .slice(0, 40);
-  if (!base) {
-    throw new Error('slug vazio apos sanitizacao: informe finalidade curta, ex. "linha-do-tempo"');
+
+  if (!slug) {
+    throw new Error('empty slug after sanitization');
   }
-  return base;
+  return slug;
 }
 
-function existsInRepo(id) {
-  // Somente-leitura: consulta git sem tocar working tree. Se o git falhar por
-  // qualquer motivo (repo, caminho), assume inexistente e segue — o colapso
-  // aqui nao pode impedir a geracao; a unicidade real vem do timestamp+slug.
+function resolveType(raw) {
+  const key = String(raw || 'prompt').toLowerCase().trim();
+  return TYPE_ALIASES[key] || null;
+}
+
+function existsInRepo(repoRoot, id) {
   const result = spawnSync('git', ['grep', '-l', '--', id], {
-    cwd: ROOT,
+    cwd: repoRoot,
     encoding: 'utf8',
     windowsHide: true,
     timeout: 15000,
   });
   if (result.error || result.status === null) return false;
-  const lines = String(result.stdout || '').split(/\r?\n/).filter(Boolean);
-  return lines.length > 0;
+  return String(result.stdout || '').trim().length > 0;
 }
 
-function resolveType(raw) {
-  const key = String(raw || 'prompt').toLowerCase().trim();
-  return TYPE_ALIASES[key] || (TYPES[key] ? key : null);
-}
-
-function generateWorionId(rawType, rawSlug, options = {}) {
+function generateId(rawType, rawSlug, options = {}) {
   const type = resolveType(rawType);
   if (!type) {
     throw new Error(
-      `tipo desconhecido: "${rawType}". Tipos canonicos: command|prompt|execution|response|artifact|event`
+      `unknown type: "${rawType}". Expected command|prompt|execution|response|artifact|event`,
     );
   }
+
   const nowMs = Number.isFinite(options.nowMs) ? options.nowMs : Date.now();
+  const repoRoot = options.repoRoot || resolveRepositoryRoot(options.startDir || __dirname);
   const slug = sanitizeSlug(rawSlug);
   const { date, time } = saoPauloParts(nowMs);
   const base = `${TYPES[type]}-${date}-${time}-${slug}`;
+
   let id = base;
-  let n = 2;
-  while (existsInRepo(id) && n <= 999) {
-    id = `${base}-${n}`;
-    n += 1;
+  let suffix = 2;
+  while (existsInRepo(repoRoot, id) && suffix <= 999) {
+    id = `${base}-${suffix}`;
+    suffix += 1;
   }
   return id;
 }
 
 function generatePromptId(rawSlug, options = {}) {
-  return generateWorionId('prompt', rawSlug, options);
+  return generateId('prompt', rawSlug, options);
 }
 
 module.exports = {
+  TYPES,
+  generateId,
   generatePromptId,
-  generateWorionId,
+  resolveRepositoryRoot,
   resolveType,
   sanitizeSlug,
   saoPauloParts,
-  FORMAT_PREFIX,
-  TYPES,
 };
 
 if (require.main === module) {
-  const args = process.argv.slice(2).filter((a) => !a.startsWith('--'));
-  // Forma 1 (legado): <slug> — tipo prompt.
-  // Forma 2 (universal): <tipo> <slug>.
+  const args = process.argv.slice(2).filter((arg) => !arg.startsWith('--'));
   let type = 'prompt';
   let slug = '';
+
   if (args.length === 1) {
     slug = args[0];
   } else if (args.length >= 2) {
-    type = args[0];
-    slug = args[1];
-  } else {
-    slug = '';
+    [type, slug] = args;
   }
+
   try {
-    process.stdout.write(generateWorionId(type, slug) + '\n');
+    process.stdout.write(`${generateId(type, slug)}\n`);
   } catch (error) {
-    process.stderr.write(`[generate-prompt-id] ${error.message}\n`);
+    process.stderr.write(`[identity-chain-generator] ${error.message}\n`);
     process.exitCode = 1;
   }
 }

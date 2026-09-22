@@ -8,76 +8,51 @@ CORRELATION_PAIR: `20260921-205545-publish-prompt-id-provenance-package`
 
 ## What was wrong
 
-Commit `07ab19614006a9c75432ae6a227546b494843e1a` published two source files under:
-
-```text
-research/agent-self-report/source-tools/
-```
-
-Those files were exact historical source artifacts from the system being studied and contained active-looking identifiers such as:
-
-```text
-WORION-CMD-...
-WORION-PROMPT-...
-WORION-EXEC-...
-WORION-RESP-...
-WORION-ART-...
-WORION-EVT-...
-WORION-NOTION-...
-WORION-GITHUB-...
-```
-
-Although the publication record described them as source-specific evidence, placing them under a public `source-tools/` surface made the boundary insufficiently clear. A reader could reasonably interpret the system-specific generator as a Traceweave tool or public naming convention.
+Commit `07ab19614006a9c75432ae6a227546b494843e1a` published two source files under an active-looking public path. Renaming the files alone did not solve the first generator because its code still exposed system-specific public identifiers and API names.
 
 That was a publication/enframing error by ChatGPT.
 
 ## Correction applied
 
-The active-looking paths were removed:
+The historical source implementation is no longer presented byte-for-byte as the public generator.
 
-```text
-research/agent-self-report/source-tools/generate-prompt-id.js
-research/agent-self-report/source-tools/generate-update-ids.js
-```
-
-The same historical source bytes are now republished under abstract evidence names:
+Current public path:
 
 ```text
 research/agent-self-report/source-artifacts/identity-chain-generator.js
-research/agent-self-report/source-artifacts/paired-publication-id-generator.js
 ```
 
-Their contents are unchanged. The rename changes only the public framing/path, not the evidence bytes.
+The public derivative now uses neutral identities:
 
-Traceweave's active public publication generator remains:
+```text
+PROV-CMD-...
+PROV-PROMPT-...
+PROV-EXEC-...
+PROV-RESP-...
+PROV-ART-...
+PROV-EVT-...
+```
+
+It also uses a neutral API (`generateId`) and resolves the actual repository root before checking collisions.
+
+The original historical source remains identifiable by its recorded Git blob and SHA-256; it is not rewritten retroactively.
+
+Traceweave's publication-pair generator remains separate:
 
 ```text
 tools/generate-publication-ids.js
-
 PROV-NOTION-...
 PROV-GITHUB-...
 PAIR_KEY=...
 ```
 
-## What was not rewritten
+## Evidence boundary
 
-Historical evidence files may still quote or reference original `WORION-*` identifiers when those identifiers are part of the preserved event.
+Historical evidence may still quote original identifiers when those identifiers belong to the preserved event. Public executable derivatives use neutral names.
 
-Those references are evidence. Rewriting them to `PROV-*` would alter the historical source and weaken provenance.
-
-Therefore the corrected boundary is:
-
-```text
-historical evidence may name the originating system exactly as recorded
-historical source code may be published under abstract evidence paths
-public Traceweave protocol/tooling uses neutral names
-```
-
-The original erroneous commit remains in Git history. The correction is additive and observable; history was not rewritten.
+The original erroneous commits remain in Git history. The correction is additive and observable; history was not rewritten.
 
 ## Publication identity
-
-This correction belongs to the same causal publication and retains the same correlation pair:
 
 ```text
 NOTION_ID=PROV-NOTION-20260921-205545-publish-prompt-id-provenance-package
