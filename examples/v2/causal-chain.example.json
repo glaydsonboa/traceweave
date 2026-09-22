@@ -1,0 +1,87 @@
+{
+  "schema": "traceweave.causal_chain.v2",
+  "protocol_version": "2",
+  "chain_id": "chain-example",
+  "authority": "Example Human",
+  "created_at": "2026-09-22T00:00:00Z",
+  "events": [
+    {
+      "event_id": "start-20260922-045523-8de3a6",
+      "event_type": "START",
+      "observed_at": "2026-09-22T00:00:01Z",
+      "session_id": "session-example",
+      "repository": "example/project",
+      "branch": "main",
+      "head_commit": "1111111111111111111111111111111111111111",
+      "prev_event_sha256": null,
+      "resume_from_event_sha256": null,
+      "source_artifact": null,
+      "source_sha256": null,
+      "metadata": {},
+      "event_sha256": "968886a34c2b65d29aabe53bb9f92922b4a45a0f95db33432cf3f2f260e8b6c5"
+    },
+    {
+      "event_id": "resume-20260922-045523-94eb19",
+      "event_type": "RESUME",
+      "observed_at": "2026-09-22T00:00:02Z",
+      "session_id": "session-example",
+      "repository": "example/project",
+      "branch": "main",
+      "head_commit": "2222222222222222222222222222222222222222",
+      "prev_event_sha256": "968886a34c2b65d29aabe53bb9f92922b4a45a0f95db33432cf3f2f260e8b6c5",
+      "resume_from_event_sha256": "968886a34c2b65d29aabe53bb9f92922b4a45a0f95db33432cf3f2f260e8b6c5",
+      "source_artifact": null,
+      "source_sha256": null,
+      "metadata": {},
+      "event_sha256": "b5c7bc451e48f4807cb579586ee002714402c852fcfca732318fa8c18f841e46"
+    },
+    {
+      "event_id": "stop-20260922-045523-5ce500",
+      "event_type": "STOP",
+      "observed_at": "2026-09-22T00:00:03Z",
+      "session_id": "session-example",
+      "repository": "example/project",
+      "branch": "main",
+      "head_commit": "3333333333333333333333333333333333333333",
+      "prev_event_sha256": "b5c7bc451e48f4807cb579586ee002714402c852fcfca732318fa8c18f841e46",
+      "resume_from_event_sha256": null,
+      "source_artifact": "records/transcript.md",
+      "source_sha256": "4444444444444444444444444444444444444444444444444444444444444444",
+      "metadata": {},
+      "event_sha256": "f81430421d6d932e15b3b7e05dc0936fb78eb273abd492eefe7ff8d4bd2f1422"
+    }
+  ],
+  "publications": [
+    {
+      "pair_key": "20260922-010203-transcript-example",
+      "notion_id": "PROV-NOTION-20260922-010203-transcript-example",
+      "github_id": "PROV-GITHUB-20260922-010203-transcript-example",
+      "generated_at_timezone": "America/Sao_Paulo",
+      "source_sha256": "4444444444444444444444444444444444444444444444444444444444444444",
+      "public_sha256": "4444444444444444444444444444444444444444444444444444444444444444",
+      "transformed": false,
+      "transformation": null,
+      "materializations": {
+        "github": {
+          "native_ids": {
+            "blob": "6666666666666666666666666666666666666666",
+            "commit": "5555555555555555555555555555555555555555"
+          },
+          "public_sha256": "4444444444444444444444444444444444444444444444444444444444444444",
+          "reference": "https://github.com/example/project/blob/5/records/transcript.md",
+          "readback_confirmed": true
+        },
+        "notion": {
+          "native_ids": {
+            "attachment_id": "example-attachment-id",
+            "block_id": "example-block-id"
+          },
+          "public_sha256": "4444444444444444444444444444444444444444444444444444444444444444",
+          "reference": "notion://example-block-id",
+          "readback_confirmed": true
+        }
+      }
+    }
+  ],
+  "status": "closed"
+}

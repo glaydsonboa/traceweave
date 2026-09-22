@@ -55,6 +55,18 @@ The underlying protocol remains:
 session → provenance → execution → tests → Git → structural state → checkpoint
 ```
 
+## Traceweave V2 — causal continuity
+
+Traceweave V2 extends checkpoint verification into a causal continuity model across lifecycle and publication boundaries:
+
+```text
+START → RESUME* → STOP → source artifact → causal pair → destination-native identities → readback → closure
+```
+
+V2 keeps temporal continuity, content identity, causal pair identity, destination-native identity, and proof of materialization separate. The draft includes Python reference primitives plus a normative JSON Schema under [`traceweave/v2/`](traceweave/v2/).
+
+See [`docs/TRACEWEAVE_V2.md`](docs/TRACEWEAVE_V2.md).
+
 ## Current implementation
 
 The repository contains a small Python reference implementation for Git-aware checkpoints and verification.
@@ -102,6 +114,7 @@ The project is also exploring small adjacent tools that preserve the same eviden
 
 ## Documentation
 
+- [Traceweave V2 — Causal Continuity Protocol](docs/TRACEWEAVE_V2.md)
 - [Continuity-first positioning](docs/continuity/TRACEWEAVE_POSITIONING.md)
 - [Protocol specification](SPEC.md)
 - [Model interoperability recipes](docs/model-interop/README.md)
