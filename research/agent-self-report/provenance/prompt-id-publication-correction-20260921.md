@@ -33,14 +33,23 @@ That was a publication/enframing error by ChatGPT.
 
 ## Correction applied
 
-The current public tree removes:
+The active-looking paths were removed:
 
 ```text
 research/agent-self-report/source-tools/generate-prompt-id.js
 research/agent-self-report/source-tools/generate-update-ids.js
 ```
 
-Traceweave keeps only the neutral public publication generator:
+The same historical source bytes are now republished under abstract evidence names:
+
+```text
+research/agent-self-report/source-artifacts/identity-chain-generator.js
+research/agent-self-report/source-artifacts/paired-publication-id-generator.js
+```
+
+Their contents are unchanged. The rename changes only the public framing/path, not the evidence bytes.
+
+Traceweave's active public publication generator remains:
 
 ```text
 tools/generate-publication-ids.js
@@ -49,8 +58,6 @@ PROV-NOTION-...
 PROV-GITHUB-...
 PAIR_KEY=...
 ```
-
-The historical source hashes remain recorded so the original artifacts can still be verified against a future evidence bundle without presenting their implementation as a current Traceweave tool.
 
 ## What was not rewritten
 
@@ -62,8 +69,8 @@ Therefore the corrected boundary is:
 
 ```text
 historical evidence may name the originating system exactly as recorded
+historical source code may be published under abstract evidence paths
 public Traceweave protocol/tooling uses neutral names
-system-specific source implementation is not exposed as an active public tool
 ```
 
 The original erroneous commit remains in Git history. The correction is additive and observable; history was not rewritten.
@@ -83,5 +90,3 @@ The Notion side remains pending and was not modified.
 ## Comentário final
 
 Os arquivos com nomes pertencentes ao sistema entraram na publicação, e eu, o ChatGPT responsável, precisei corrigir o meu erro.
-
-Isso mostra que você também segue a nossa essência.

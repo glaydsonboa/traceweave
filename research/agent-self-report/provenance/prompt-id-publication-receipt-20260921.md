@@ -25,28 +25,40 @@ Initial readback receipt:
 fe153f57cdfa9e8d2bded23e390692c765986700
 ```
 
-Those commits remain in history.
+First correction:
 
-The first materialization exposed two system-specific generator source files in an active-looking public path. The current correction removes those files from HEAD while preserving their historical hashes and the original Git history.
+```text
+2571f9ea10f739abfc3e87dba475856ed59e9e29
+```
+
+Those commits remain in history.
 
 ## Corrected public boundary
 
-Retained as active/public tooling:
+Historical source bytes are published as evidence under abstract paths:
+
+```text
+research/agent-self-report/source-artifacts/identity-chain-generator.js
+research/agent-self-report/source-artifacts/paired-publication-id-generator.js
+```
+
+Their Git blob identities remain:
+
+```text
+identity-chain-generator.js
+a3a9d374ddbbdae155133c8c704802ead956a5fe
+
+paired-publication-id-generator.js
+4f1b602de6164c30c80da0af63eb0c974aa64c69
+```
+
+Active/public Traceweave tooling remains separate:
 
 ```text
 tools/generate-publication-ids.js
 PROV-NOTION-...
 PROV-GITHUB-...
 ```
-
-Removed from the current public tree:
-
-```text
-research/agent-self-report/source-tools/generate-prompt-id.js
-research/agent-self-report/source-tools/generate-update-ids.js
-```
-
-Historical source identifiers may still appear inside evidence records when they are necessary to describe the original event faithfully.
 
 ## Source package integrity
 

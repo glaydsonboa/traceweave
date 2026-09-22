@@ -32,16 +32,22 @@ The current public tree retains:
 - downstream commit-chain corroboration;
 - execution-visibility / dual-publication method;
 - source hashes;
+- both historical generator source artifacts under abstract evidence filenames;
 - neutral Traceweave publication generator;
-- publication record and readback receipt.
+- publication record, correction and readback receipt.
 
 ## Correction to the first materialization
 
-Commit `07ab19614006a9c75432ae6a227546b494843e1a` also published exact source copies of two system-specific generators under `research/agent-self-report/source-tools/`.
+Commit `07ab19614006a9c75432ae6a227546b494843e1a` exposed two historical generators under active-looking `source-tools/` names.
 
-That placement was wrong for the public surface because their `WORION-*` namespaces could be mistaken for Traceweave's own public protocol.
+Those paths were removed. The exact same source bytes are now published under:
 
-The current tree removes those two source implementations. Their hashes remain part of the provenance record. Historical evidence continues to preserve original identifiers where rewriting them would falsify the source.
+```text
+research/agent-self-report/source-artifacts/identity-chain-generator.js
+research/agent-self-report/source-artifacts/paired-publication-id-generator.js
+```
+
+Their original hashes and historical identifiers remain unchanged. The path correction prevents the system-specific source artifacts from looking like Traceweave's active tooling while preserving the evidence itself.
 
 See:
 
@@ -56,7 +62,7 @@ That later execution is not used to retroactively prove the missing generator ev
 ## Destination state
 
 ```text
-GitHub: corrected public tree; native correction commit and readback are recorded by repository history.
+GitHub: corrected public tree; historical source bytes restored under abstract evidence names.
 Notion: PENDING — not modified.
 ```
 
