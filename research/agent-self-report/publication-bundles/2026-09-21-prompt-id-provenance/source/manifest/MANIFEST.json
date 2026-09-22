@@ -1,0 +1,67 @@
+{
+  "package": "TRACEWEAVE_PREPUBLICATION_PROMPT_ID_PROVENANCE_20260921",
+  "status": "PRE_PUBLICATION",
+  "publication_authorized": false,
+  "primary_case": "PROMPT_ID_PROVENANCE_GAP",
+  "primary_session_id": "2ed6e0a9-36fa-4eb3-9290-ebb3d226d30d",
+  "source_transcript_sha256": "2828573ce955b96aadb3b534b893c9f7170c9232eed79c97056697b7fe3245b0",
+  "corroboration_session_id": "cb7bfd6a-a856-4a27-8b6e-ed6f2a038682",
+  "corroboration_sha256": "1653fc538cb1949b125b1c043ef8e04fd5bf1e9ad118f1f782d9573508b109eb",
+  "files": [
+    {
+      "path": "README.md",
+      "bytes": 1859,
+      "sha256": "420142b0073758faa043ba3f13b07677978346cf08b599f5b54af87366437c1e"
+    },
+    {
+      "path": "case/CASE_001_PROMPT_ID_PROVENANCE_GAP.md",
+      "bytes": 3344,
+      "sha256": "aeb569e8399cb127b90be7ff56a64357ce26245c0c436f5c8f225ef52d7dca93"
+    },
+    {
+      "path": "case/CORROBORATION_COMMIT_CHAIN_cb7bfd6a.md",
+      "bytes": 2968,
+      "sha256": "a36e948ccf9cc9b0b0cef3231395cee73b4ea2d3269300ee47c0342d632b39f1"
+    },
+    {
+      "path": "case/EVIDENCE_EXCERPT_2ed6e0a9.md",
+      "bytes": 8399,
+      "sha256": "1ba1202b849683424e0bd3a70692cea477e91a182ea33d481e22fe47fe85747a"
+    },
+    {
+      "path": "case/OTHER_FINDINGS_SEPARATION.md",
+      "bytes": 3738,
+      "sha256": "100d8cc3b139342d95649a18852dc4ea4025f7f9babff5a301455d493eb3fec9"
+    },
+    {
+      "path": "manifest/SOURCE_HASHES.md",
+      "bytes": 1084,
+      "sha256": "a828e972b37d12fa0b223813031e29cf3614a019a26864e1ffd503a58f62aec6"
+    },
+    {
+      "path": "method/METHOD_EXECUTION_VISIBILITY_AND_DUAL_PUBLICATION.md",
+      "bytes": 4179,
+      "sha256": "f02b1868ccf1491359d5d6525e6a2fde601a2b8033a21c18b08fe5f6bfc1753e"
+    },
+    {
+      "path": "publication/PUBLICATION_CHECKLIST.md",
+      "bytes": 1495,
+      "sha256": "59494aaf2f4d571b857c5e8cf6449c7edf3066ac14ceaeb314db7b3b9f275d60"
+    },
+    {
+      "path": "publication/PUBLICATION_PROOF_TEMPLATE.json",
+      "bytes": 1244,
+      "sha256": "b0ea013499c34a12766d5a3cfa10e03bf6692ce1a193cfc67052c9a39a70cf3a"
+    },
+    {
+      "path": "scripts/generate-prompt-id.js",
+      "bytes": 5731,
+      "sha256": "b6c6f4188973e2b9032b3c6e1e739137df056c509e8e959966f0b113e830dc2f"
+    },
+    {
+      "path": "scripts/generate-update-ids.js",
+      "bytes": 3237,
+      "sha256": "f2f966e9209fbd56d95fe2cffaa2f43fa7a9846329d975e2613ecec9a6f61d17"
+    }
+  ]
+}

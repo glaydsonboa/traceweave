@@ -1,0 +1,41 @@
+{
+  "status": "PRE_PUBLICATION_TEMPLATE",
+  "authority": "Glaydson",
+  "origin_evidence": {
+    "session_id": "2ed6e0a9-36fa-4eb3-9290-ebb3d226d30d",
+    "sha256": "2828573ce955b96aadb3b534b893c9f7170c9232eed79c97056697b7fe3245b0",
+    "role": "primary transcript surface supplied for review"
+  },
+  "prompt_provenance": {
+    "prompt_id": null,
+    "generator": "scripts/generate-prompt-id.js",
+    "generation_event_status": "UNPROVEN|PROVEN|NOT_GENERATED|GENERATED_LATE",
+    "generation_event_pointer": null
+  },
+  "publication_pair": {
+    "pair_key": null,
+    "notion_id": null,
+    "github_id": null,
+    "generator": "scripts/generate-update-ids.js"
+  },
+  "github": {
+    "status": "PENDING|SYNCED|FAILED|SKIPPED_BY_AUTHORITY",
+    "native_id": null,
+    "url_or_ref": null,
+    "readback": null,
+    "local_head": null,
+    "remote_head": null,
+    "local_equals_remote": null
+  },
+  "notion": {
+    "status": "PENDING|SYNCED|FAILED|SKIPPED_BY_AUTHORITY",
+    "native_page_id": null,
+    "url": null,
+    "readback": null
+  },
+  "stop": {
+    "status": "PENDING|COMPLETE|PARTIAL|BLOCKED|FAILED",
+    "artifact": null
+  },
+  "rule": "Correlation IDs identify the update; native destination IDs plus readback prove materialization."
+}
