@@ -51,6 +51,21 @@
       "event_sha256": "f81430421d6d932e15b3b7e05dc0936fb78eb273abd492eefe7ff8d4bd2f1422"
     }
   ],
+  "custody_mirrors": [
+    {
+      "source_artifact": "records/native/session-example.jsonl",
+      "source_sha256": "7777777777777777777777777777777777777777777777777777777777777777",
+      "source_bytes": 128,
+      "replica_artifact": "protected-vault/session-example.jsonl",
+      "replica_sha256": "7777777777777777777777777777777777777777777777777777777777777777",
+      "replica_bytes": 128,
+      "native_ids": {
+        "receipt": "mirror-receipt-example"
+      },
+      "readback_confirmed": true,
+      "overwrite_protected": true
+    }
+  ],
   "publications": [
     {
       "pair_key": "20260922-010203-transcript-example",

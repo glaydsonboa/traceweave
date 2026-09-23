@@ -67,6 +67,16 @@ V2 keeps temporal continuity, content identity, causal pair identity, destinatio
 
 See [`docs/TRACEWEAVE_V2.md`](docs/TRACEWEAVE_V2.md).
 
+V2 also separates two mechanisms that are often both called “dual provenance”:
+
+```text
+independent byte-preserving custody mirror
+≠
+paired GitHub / Notion publication
+```
+
+See [`docs/continuity/DUAL_PROVENANCE_BOUNDARY.md`](docs/continuity/DUAL_PROVENANCE_BOUNDARY.md).
+
 ## Current implementation
 
 The repository contains a small Python reference implementation for Git-aware checkpoints and verification.
@@ -115,6 +125,7 @@ The project is also exploring small adjacent tools that preserve the same eviden
 ## Documentation
 
 - [Traceweave V2 — Causal Continuity Protocol](docs/TRACEWEAVE_V2.md)
+- [Dual provenance boundary](docs/continuity/DUAL_PROVENANCE_BOUNDARY.md)
 - [Continuity-first positioning](docs/continuity/TRACEWEAVE_POSITIONING.md)
 - [Protocol specification](SPEC.md)
 - [Model interoperability recipes](docs/model-interop/README.md)

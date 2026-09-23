@@ -75,6 +75,25 @@ def verify_chain(chain: dict[str, Any]) -> VerificationResult:
     if not closed and events[-1].get("event_type") == "STOP":
         result.errors.append("a chain ending in STOP must have status=closed")
 
+    custody_mirrors = chain.get("custody_mirrors", [])
+    if not isinstance(custody_mirrors, list):
+        result.errors.append("custody_mirrors must be a list")
+        return result
+    for index, mirror in enumerate(custody_mirrors):
+        if not isinstance(mirror, dict):
+            result.errors.append(f"custody_mirrors[{index}] must be an object")
+            continue
+        if mirror.get("source_sha256") != mirror.get("replica_sha256"):
+            result.errors.append(f"custody_mirrors[{index}] source and replica hashes differ")
+        if mirror.get("source_bytes") != mirror.get("replica_bytes"):
+            result.errors.append(f"custody_mirrors[{index}] source and replica byte counts differ")
+        if not isinstance(mirror.get("native_ids"), dict) or not mirror["native_ids"]:
+            result.errors.append(f"custody_mirrors[{index}] lacks native_ids")
+        if mirror.get("readback_confirmed") is not True:
+            result.warnings.append(f"custody_mirrors[{index}] is not readback-confirmed")
+        if mirror.get("overwrite_protected") is not True:
+            result.warnings.append(f"custody_mirrors[{index}] is not overwrite-protected")
+
     publications = chain.get("publications", [])
     if not isinstance(publications, list):
         result.errors.append("publications must be a list")
@@ -125,5 +144,24 @@ def verify_chain(chain: dict[str, Any]) -> VerificationResult:
                 result.errors.append(f"publications[{index}] {destination} materialization hash differs from public_sha256")
             if mat.get("readback_confirmed") is not True:
                 result.warnings.append(f"publications[{index}] {destination} is not readback-confirmed")
+            if pub.get("artifact_kind") == "source":
+                artifact = mat.get("downloadable_artifact")
+                if not isinstance(artifact, dict):
+                    result.errors.append(
+                        f"publications[{index}] {destination} source materialization lacks downloadable_artifact"
+                    )
+                elif artifact.get("sha256") != public_sha:
+                    result.errors.append(
+                        f"publications[{index}] {destination} downloadable artifact hash differs from public_sha256"
+                    )
+                else:
+                    if not artifact.get("filename") or not artifact.get("download_reference"):
+                        result.errors.append(
+                            f"publications[{index}] {destination} downloadable artifact lacks filename or reference"
+                        )
+                    if not isinstance(artifact.get("byte_length"), int) or artifact["byte_length"] < 0:
+                        result.errors.append(
+                            f"publications[{index}] {destination} downloadable artifact has invalid byte_length"
+                        )
 
     return result

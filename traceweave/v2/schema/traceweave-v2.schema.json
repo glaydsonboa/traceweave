@@ -25,6 +25,10 @@
       "minItems": 1,
       "items": {"$ref": "#/$defs/event"}
     },
+    "custody_mirrors": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/custody_mirror"}
+    },
     "publications": {
       "type": "array",
       "items": {"$ref": "#/$defs/publication"}
@@ -81,7 +85,49 @@
         },
         "public_sha256": {"$ref": "#/$defs/sha256"},
         "reference": {"type": ["string", "null"]},
-        "readback_confirmed": {"type": "boolean"}
+        "readback_confirmed": {"type": "boolean"},
+        "downloadable_artifact": {"$ref": "#/$defs/downloadable_artifact"}
+      },
+      "additionalProperties": false
+    },
+    "downloadable_artifact": {
+      "type": "object",
+      "required": ["filename", "byte_length", "sha256", "download_reference"],
+      "properties": {
+        "filename": {"type": "string", "minLength": 1},
+        "byte_length": {"type": "integer", "minimum": 0},
+        "sha256": {"$ref": "#/$defs/sha256"},
+        "download_reference": {"type": "string", "minLength": 1}
+      },
+      "additionalProperties": false
+    },
+    "custody_mirror": {
+      "type": "object",
+      "required": [
+        "source_artifact",
+        "source_sha256",
+        "source_bytes",
+        "replica_artifact",
+        "replica_sha256",
+        "replica_bytes",
+        "native_ids",
+        "readback_confirmed",
+        "overwrite_protected"
+      ],
+      "properties": {
+        "source_artifact": {"type": "string", "minLength": 1},
+        "source_sha256": {"$ref": "#/$defs/sha256"},
+        "source_bytes": {"type": "integer", "minimum": 0},
+        "replica_artifact": {"type": "string", "minLength": 1},
+        "replica_sha256": {"$ref": "#/$defs/sha256"},
+        "replica_bytes": {"type": "integer", "minimum": 0},
+        "native_ids": {
+          "type": "object",
+          "minProperties": 1,
+          "additionalProperties": {"type": "string", "minLength": 1}
+        },
+        "readback_confirmed": {"type": "boolean"},
+        "overwrite_protected": {"type": "boolean"}
       },
       "additionalProperties": false
     },
@@ -105,6 +151,7 @@
         "public_sha256": {"$ref": "#/$defs/sha256"},
         "transformed": {"type": "boolean"},
         "transformation": {"type": ["string", "null"]},
+        "artifact_kind": {"enum": ["document", "source", "binary", "dataset"]},
         "materializations": {
           "type": "object",
           "properties": {

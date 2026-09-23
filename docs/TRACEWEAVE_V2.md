@@ -6,6 +6,11 @@ Traceweave V2 extends the original checkpoint protocol into a causal continuity 
 
 V2 is derived from mechanisms that were exercised before this specification was written: lifecycle continuity through START / RESUME / STOP, forward-only correction that preserves prior error, source/public content hashes, paired GitHub/Notion logical identifiers, native destination identifiers, and destination readback.
 
+V2 distinguishes independent custody from paired publication. A byte-preserving
+replica in a separately controlled location is a custody proof; two externally
+materialized descendants sharing one `PAIR_KEY` are a publication proof. Neither
+implies the other.
+
 ## 1. The V2 chain
 
 ```text
@@ -138,7 +143,39 @@ AND
 MaterializedNotion(U)
 ```
 
-## 6. Asymmetric failure
+### 5.1 Source artifacts remain downloadable
+
+When `artifact_kind == "source"`, every destination materialization MUST expose a
+downloadable artifact descriptor containing filename, byte length, SHA-256 and a
+download reference. Rendered code or copy-to-clipboard alone is not a source
+materialization receipt.
+
+## 6. Independent custody provenance
+
+Custody provenance is recorded separately from `Pair(U)`:
+
+```text
+Custody(S) = {
+  source_artifact,
+  source_sha256,
+  source_bytes,
+  replica_artifact,
+  replica_sha256,
+  replica_bytes,
+  native_ids,
+  readback_confirmed,
+  overwrite_protected
+}
+```
+
+Custody is confirmed only when source and replica hashes and byte counts match,
+the replica has a native identity, readback occurred, and overwriting is
+prevented or equivalently constrained.
+
+Visual similarity does not satisfy this rule. A trailing `CRLF` added after a
+final `LF` changes the artifact and MUST fail byte identity.
+
+## 7. Asymmetric failure
 
 Failure in one destination MUST NOT regenerate the pair.
 
@@ -151,7 +188,7 @@ If GitHub materializes and Notion is unavailable:
 
 This preserves genealogy without fabricating simultaneity.
 
-## 7. Recursive materialization
+## 8. Recursive materialization
 
 The same provenance rule may be applied recursively:
 
@@ -173,7 +210,7 @@ CLOSURE
 
 A manifest is therefore not merely a list. It can itself become a causally identified, materialized, and verified artifact.
 
-## 8. Forward-only correction
+## 9. Forward-only correction
 
 Traceweave does not require prior error to disappear in order for the current state to be correct.
 
@@ -188,7 +225,7 @@ ERROR / INVALIDATED CLAIM
 
 This makes the history auditable instead of cosmetically consistent.
 
-## 9. Verification levels
+## 10. Verification levels
 
 V2 distinguishes verification levels that V1 could collapse into one structural check.
 
@@ -209,12 +246,13 @@ Both destination materializations share one pre-existing causal pair and indepen
 
 A system MUST NOT promote a lower evidence level into a higher one by narrative inference.
 
-## 10. Reference implementation in this repository
+## 11. Reference implementation in this repository
 
 The V2 reference primitives live under `traceweave/v2/`:
 
 - `lifecycle.py` — hash-linked START / RESUME / STOP events;
 - `provenance.py` — paired causal IDs and destination materialization records;
+- `provenance.py` — independent custody comparison and mirror records;
 - `verify.py` — internal chain and publication consistency checks;
 - `schema/traceweave-v2.schema.json` — normative JSON shape.
 
@@ -222,8 +260,10 @@ An example object is published at `examples/v2/causal-chain.example.json`.
 
 These V2 primitives are additive. The existing v0.1 checkpoint CLI remains intact while the V2 lifecycle and publication model are evaluated and integrated.
 
-## 11. Core rule
+## 12. Core rule
 
 > **Logical IDs correlate. Native destination IDs plus content identity and readback prove materialization. START / RESUME / STOP prove temporal continuity only when their evidence remains linked.**
+
+> **Independent custody preserves source bytes. Paired publication proves external descendants. Byte identity requires artifact readback, not rendered similarity.**
 
 The purpose of Traceweave V2 is not to prove that a file exists. It is to preserve a reconstructable line from authority and execution through continuity, artifact identity, materialization, and closure.

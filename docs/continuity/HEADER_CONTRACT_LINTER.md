@@ -10,6 +10,16 @@ Version 0.1 is a structural linter, not a semantic code-understanding engine. It
 
 It should not claim that prose assertions about runtime behavior are true merely because they appear in a header.
 
+## Mutation-prompt boundary
+
+When a repository requires source headers, a mutation prompt or change contract
+should explicitly require the executor to reconcile every applicable header in
+the same change. The executor should update the header to describe the
+post-change state or report why the policy does not apply.
+
+The linter can prove that this structural obligation was represented and that
+required fields are present. It cannot prove semantic truth from header prose.
+
 ## Example configuration
 
 ```yaml
