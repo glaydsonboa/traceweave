@@ -4,11 +4,17 @@
 
 **CANONICAL AUTHORITY:** <user name>
 
+**AUTHORITY / DIRECTION:** <user name>
+
+**FORMULATION:** ChatGPT
+
+**PUBLICATION ROLE:** AI-formulated governance document under human authority
+
 **FUNCTION:** daily compliance audit and GitHub ↔ Notion reconciliation
 
 **CREATION_PROMPT_ID:** `PROJECT-PROMPT-YYYYMMDD-HHMMSS-<daily-governance-slug>`
 
-> Public generic derivative. Project-specific agent names, private paths, repositories, IDs, model restrictions, dates, machine details, and internal product terminology have been replaced with generic roles and placeholders while preserving the governance method.
+> Provenance note: this governance document was formulated by ChatGPT under `<user name>`'s authority and direction. The public version generalizes project-specific agent names, private paths, repositories, IDs, model restrictions, dates, machine details, and internal product terminology while preserving the governance method.
 
 ## 1. Identity and mission
 

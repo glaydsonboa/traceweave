@@ -31,6 +31,17 @@ The three documents below are sanitized, English, public-reference derivatives o
 - [02 — Devil's Advocate Governor: Independent Adversarial Audit](./02_ADVERSARIAL_GOVERNANCE_AUDITOR.md)
 - [03 — Daily Provenance Governor](./03_DAILY_PROVENANCE_GOVERNOR.md)
 
+### Provenance correction — document 03
+
+Document 03 was **formulated by ChatGPT under `<user name>`'s authority and direction**. This attribution is recorded forward-only; the earlier publication remains in Git history.
+
+Current causal pair identifiers:
+
+- `PAIR_KEY`: `20260923-153843-governanca-comprovada-arquivos-genericos`
+- `GITHUB_ID`: `PROV-GITHUB-20260923-153843-governanca-comprovada-arquivos-genericos`
+- `NOTION_ID`: `PROV-NOTION-20260923-153843-governanca-comprovada-arquivos-genericos`
+- paired manifest: [04 — Paired Publication Manifest](./04_PAIRED_PUBLICATION_MANIFEST.md)
+
 These public derivatives preserve the governance logic while intentionally not preserving private operational identifiers.
 
 It does **not** claim that governance is correct merely because a document exists. The governing principle is the opposite:
