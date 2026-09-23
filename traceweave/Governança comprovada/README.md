@@ -23,6 +23,16 @@ In Traceweave terms, governance becomes stronger when the system can answer, wit
 
 This folder explains that model.
 
+## Downloadable generic governance artifacts
+
+The three documents below are sanitized, English, public-reference derivatives of internal governance artifacts. Personal names are replaced with `<user name>`; project-specific IDs, paths, dates, commits, machine details, private repository names, and model-specific rules are generalized.
+
+- [01 — Operational Law: Dual Provenance and Source Headers](./01_DUAL_PROVENANCE_AND_HEADER_LAW.md)
+- [02 — Devil's Advocate Governor: Independent Adversarial Audit](./02_ADVERSARIAL_GOVERNANCE_AUDITOR.md)
+- [03 — Daily Provenance Governor](./03_DAILY_PROVENANCE_GOVERNOR.md)
+
+These public derivatives preserve the governance logic while intentionally not preserving private operational identifiers.
+
 It does **not** claim that governance is correct merely because a document exists. The governing principle is the opposite:
 
 > A governance claim must remain distinguishable from the evidence that can verify or invalidate it.
