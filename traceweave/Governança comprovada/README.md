@@ -836,3 +836,11 @@ This README is currently a **GitHub materialization** in the public Traceweave r
 Its presence here does not, by itself, claim a completed GitHub/Notion publication pair.
 
 If this document is later paired with another destination, the pair must satisfy the Traceweave V2 requirements independently: pre-existing causal IDs, native destination identities, content identity, readback, and the appropriate verification state.
+
+
+## Confirmed pair closure
+
+The causal pair `20260923-153843-governanca-comprovada-arquivos-genericos` completed GitHub and Notion readback with exact byte equality for all four paired artifacts.
+
+- [05 — Pair Closure](./05_PAIR_CLOSURE.md)
+- final pair verdict: `PAIR_STATUS: CONFIRMED`
