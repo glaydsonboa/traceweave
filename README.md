@@ -4,6 +4,17 @@
 
 **Resume engineering work from evidence, not conversational memory.**
 
+## Start here — public evidence
+
+If you came here to inspect the published work rather than the package itself, start with these:
+
+1. **[Agent Self-Report Evidence](research/agent-self-report/README.md)** — the main research index: evidence model, promotion rules, limitations, exemplar cases, provenance, causal lineage, and reproducibility questions.
+2. **[A Bridge Between Coding CLIs](research/agent-self-report/provenance/codex-claude-cli-bridge.md)** — the current operational case on durable coordination between Codex CLI and Claude Code without shared conversational memory.
+3. **[Proven Governance](traceweave/Governan%C3%A7a%20comprovada/README.md)** — the public governance package, including dual provenance, adversarial audit, and the daily provenance governor.
+4. **[Operational Causal Chain](research/agent-self-report/provenance/operational-causal-chain.md)** — a sanitized reconstruction from human authority through instruction, execution, lifecycle evidence, Git, readback, and closure.
+5. **[One Session, Three Participants](research/agent-self-report/provenance/one-session-three-participants.md)** — an audited longitudinal reconstruction of a human-guided, multi-model engineering session.
+6. **[Traceweave V2 — Causal Continuity Protocol](docs/TRACEWEAVE_V2.md)** — the protocol layer that connects START / RESUME / STOP, content identity, paired publication, destination-native identity, and readback.
+
 Traceweave is a protocol and tooling project for preserving recoverable technical state across development sessions. It links checkpoints to exact Git state, explicit test evidence, provenance, open work, and structural synchronization without requiring a model to remember the previous conversation.
 
 It works with one CLI, several coding agents, or a human-only workflow.
