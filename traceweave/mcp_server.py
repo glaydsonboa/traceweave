@@ -264,6 +264,11 @@ def traceweave_git_commit(paths: list[str], message: str) -> dict:
     if not message.strip():
         raise ValueError("Commit message is required.")
     safe_paths = [_relative(_safe_path(path)) for path in paths]
+    pre_staged = _run_git(["diff", "--cached", "--name-only"]).stdout.splitlines()
+    if pre_staged:
+        raise RuntimeError(
+            f"Refusing to commit while another execution has staged paths: {pre_staged}"
+        )
     _run_git(["add", "--", *safe_paths])
     staged = _run_git(["diff", "--cached", "--name-only"]).stdout.splitlines()
     unexpected = sorted(set(staged) - set(safe_paths))
