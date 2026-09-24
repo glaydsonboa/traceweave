@@ -47,9 +47,12 @@ Leitura + escrita + commit/push:
 ```text
 TRACEWEAVE_ROOT=/caminho/traceweave
 TRACEWEAVE_MCP_SCOPES=read,write,publish
+TRACEWEAVE_ALLOWED_REMOTE=glaydsonboa/traceweave
 ```
 
-O default é `read`.
+O default é `read`. `TRACEWEAVE_ALLOWED_REMOTE` (`dono/repositório`) trava o push: o remote precisa
+ser um nome configurado no clone e sua URL precisa apontar para esse repositório. Sem a variável, só
+se exige que o remote seja um nome configurado.
 
 ## Transporte
 
@@ -114,7 +117,13 @@ O servidor:
 - bloqueia acesso direto a `.git`;
 - preserva a separação entre editar e publicar;
 - usa stage exato;
-- executa `git diff --cached --check` antes do commit;
+- recusa `ref`, `remote` e `branch` que comecem com `-`, e passa a busca com `-e`, para que nenhum
+  valor vindo do chamador vire opção do git (`--output=`, `--open-files-in-pager=`,
+  `--receive-pack=` transformariam leitura em escrita ou execução de comando);
+- aceita no push apenas um remote configurado e, com `TRACEWEAVE_ALLOWED_REMOTE`, apenas o
+  repositório autorizado;
+- não executa `git diff --cached --check`: espaço no fim de linha em transcripts e em fala humana
+  citada é conteúdo literal e deve ser publicado byte a byte;
 - confirma o SHA remoto depois do push;
 - não faz reset, amend, stash, force-push ou limpeza implícita.
 

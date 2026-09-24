@@ -68,6 +68,36 @@ def _run_git(args: Iterable[str], *, check: bool = True) -> subprocess.Completed
     return result
 
 
+def _reject_option(value: str, name: str) -> str:
+    """Refuse a caller-supplied value that git would parse as an option.
+
+    Without this, a value such as ``--output=<file>`` or ``--open-files-in-pager=<cmd>``
+    turns a read-only tool into a file write or a command execution.
+    """
+    if not isinstance(value, str) or not value.strip():
+        raise ValueError(f"{name} is required.")
+    if value.lstrip().startswith("-"):
+        raise ValueError(f"{name} must not start with '-': {value!r}")
+    return value
+
+
+def _allowed_remote(remote: str) -> str:
+    """Accept only a configured remote name whose URL points at the allowed repository."""
+    _reject_option(remote, "remote")
+    configured = _run_git(["remote"]).stdout.split()
+    if remote not in configured:
+        raise ValueError(f"Unknown remote {remote!r}. Configured remotes: {configured}")
+    allowed = os.environ.get("TRACEWEAVE_ALLOWED_REMOTE", "").strip().lower()
+    if allowed:
+        url = _run_git(["remote", "get-url", remote]).stdout.strip().lower()
+        normalized = url.removesuffix(".git").rstrip("/")
+        if not (normalized.endswith("/" + allowed) or normalized.endswith(":" + allowed)):
+            raise PermissionError(
+                f"Remote {remote!r} points to {url!r}, not to the allowed repository {allowed!r}."
+            )
+    return remote
+
+
 def _sha256_bytes(data: bytes) -> str:
     return hashlib.sha256(data).hexdigest()
 
@@ -167,7 +197,8 @@ def traceweave_search_text(query: str, glob: str = "*.md", max_results: int = 50
     _require("read")
     if not query:
         raise ValueError("query is required")
-    args = ["grep", "-n", "-I", "--no-color", "-F", query, "--"]
+    # `-e` binds the query as the pattern, so a query starting with '-' is searched, not parsed.
+    args = ["grep", "-n", "-I", "--no-color", "-F", "-e", query, "--"]
     if glob:
         args.append(glob)
     result = _run_git(args, check=False)
@@ -199,9 +230,10 @@ def traceweave_sha256(path: str) -> dict:
 def traceweave_git_readback(ref: str, path: str) -> dict:
     """Read a file exactly as stored in a Git ref and return its blob id and SHA-256."""
     _require("read")
+    _reject_option(ref, "ref")
     file_path = _safe_path(path)
     relative = _relative(file_path)
-    blob = _run_git(["rev-parse", f"{ref}:{relative}"]).stdout.strip()
+    blob = _run_git(["rev-parse", "--verify", "--end-of-options", f"{ref}:{relative}"]).stdout.strip()
     data = subprocess.run(
         ["git", "-C", str(_root()), "show", f"{ref}:{relative}"],
         capture_output=True,
@@ -276,7 +308,8 @@ def traceweave_git_commit(paths: list[str], message: str) -> dict:
         raise RuntimeError(f"Unexpected paths are staged: {unexpected}")
     if not staged:
         raise RuntimeError("No staged changes to commit.")
-    _run_git(["diff", "--cached", "--check"])
+    # No `git diff --cached --check`: it refuses trailing whitespace, which in transcripts and
+    # quoted human speech is literal content that must be preserved byte for byte.
     _run_git(["commit", "-m", message])
     head = _run_git(["rev-parse", "HEAD"]).stdout.strip()
     return {"commit": head, "paths": staged, "message": message}
@@ -286,10 +319,12 @@ def traceweave_git_commit(paths: list[str], message: str) -> dict:
 def traceweave_git_push(remote: str = "origin", branch: str | None = None) -> dict:
     """Push the current branch without force. Requires publish scope."""
     _require("publish")
+    _allowed_remote(remote)
     current = _run_git(["branch", "--show-current"]).stdout.strip()
     target = branch or current
     if not current:
         raise RuntimeError("Detached HEAD is not publishable.")
+    _reject_option(target, "branch")
     if target != current:
         raise RuntimeError(f"Refusing to push a different branch: current={current}, requested={target}")
     _run_git(["push", remote, f"HEAD:{target}"])
