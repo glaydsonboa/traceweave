@@ -52,6 +52,7 @@ The large corpus is **not** published in this step.
 - [077a14e2 — transcript genealogy and Git continuity](provenance/077a14e2.md)
 - [Uma sessão, três participantes, uma linha de trabalho — reconstrução auditada](provenance/one-session-three-participants.md)
 - [Cadeia causal operacional — do que declaramos ao que realmente fazemos](provenance/operational-causal-chain.md)
+- [A Bridge Between Coding CLIs — durable coordination without shared conversational memory](provenance/codex-claude-cli-bridge.md)
 - Earlier public provenance index: [Issue #3](https://github.com/glaydsonboa/traceweave/issues/3)
 
 ## Evidence classes
