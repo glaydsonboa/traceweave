@@ -9,10 +9,19 @@ description = "Verifiable continuity and provenance for AI coding sessions — p
 readme = "README.md"
 license = { text = "Apache-2.0" }
 requires-python = ">=3.11"
-dependencies = []
+dependencies = [
+  "mcp>=2,<3",
+  # traceweave.v2.provenance loads ZoneInfo("America/Sao_Paulo") at import; Windows has no
+  # system time zone database, so without tzdata that module does not import.
+  "tzdata",
+]
+
+[project.optional-dependencies]
+test = ["pytest"]
 
 [project.scripts]
 traceweave = "traceweave.cli:main"
+traceweave-mcp = "traceweave.mcp_server:main"
 
 [tool.setuptools.packages.find]
 include = ["traceweave*"]

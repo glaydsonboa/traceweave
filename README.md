@@ -116,6 +116,18 @@ python -m traceweave verify
 
 The implementation is intentionally conservative: local execution, deterministic output, explicit evidence, and no requirement for cloud services or telemetry.
 
+## MCP server — read / write / publish
+
+Traceweave now includes an MCP server that exposes repository evidence and controlled mutation as explicit capabilities:
+
+```text
+read    → inspect, search, hash, Git readback
+write   → create/replace/append repository files
+publish → exact-path commit + non-force push + remote SHA readback
+```
+
+See [docs/MCP.md](docs/MCP.md).
+
 ## Continuity-first direction
 
 The next public proof is a two-session continuity workflow:
