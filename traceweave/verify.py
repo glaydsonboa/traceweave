@@ -122,4 +122,64 @@ def verify(checkpoint: dict) -> VerificationResult:
                         f"({source_commit!r}) does not match git.head_commit ({head_commit!r})"
                     ))
 
+    # 8. SPEC.md §10 rule 7 — no unsupported claim is promoted to fact. SPEC.md §9 defines
+    # "complete" as "contains the evidence required by the current session boundary". A
+    # checkpoint that claims "complete" must therefore carry that evidence: every test entry
+    # has a result other than not_run and a non-empty evidence, and the working tree is clean.
+    if checkpoint_status == "complete":
+        if isinstance(tests, list):
+            if not tests:
+                _error(result, "status 'complete' requires at least one test entry with evidence (SPEC.md §10 rule 7)")
+            for index, entry in enumerate(tests):
+                if not isinstance(entry, dict):
+                    continue
+                if entry.get("result") == "not_run":
+                    _error(result, f"status 'complete' but tests[{index}].result is 'not_run' (SPEC.md §10 rule 7)")
+                if not entry.get("evidence"):
+                    _error(result, f"status 'complete' but tests[{index}] has no evidence (SPEC.md §10 rule 7)")
+        if isinstance(git, dict) and git.get("working_tree") != "clean":
+            _error(result, "status 'complete' but git.working_tree is not 'clean' (SPEC.md §10 rule 7)")
+
+    return result
+
+
+def verify_against_repo(checkpoint: dict, repo) -> VerificationResult:
+    """Check the checkpoint's Git claims against a real repository (opt-in).
+
+    verify() is purely structural and never touches Git. This function is the other half: it
+    catches claims that were false at the moment of recording, which a hash chain would only
+    seal — a head_commit that does not exist, a base_commit that is not an ancestor of it, or
+    a working_tree state that contradicts the repository when head_commit is the current HEAD.
+    """
+    import subprocess
+    from pathlib import Path
+
+    result = VerificationResult()
+    git = checkpoint.get("git") if isinstance(checkpoint, dict) else None
+    if not isinstance(git, dict):
+        _error(result, "git block missing")
+        return result
+    root = str(Path(repo))
+
+    def run(*args):
+        return subprocess.run(["git", "-C", root, *args], capture_output=True, text=True)
+
+    def exists(sha):
+        return isinstance(sha, str) and sha and not sha.startswith("-") and             run("cat-file", "-e", "--end-of-options", f"{sha}^{{commit}}").returncode == 0
+
+    head, base = git.get("head_commit"), git.get("base_commit")
+    if not exists(head):
+        _error(result, f"git.head_commit {head!r} does not exist in {root}")
+    if not exists(base):
+        _error(result, f"git.base_commit {base!r} does not exist in {root}")
+    if exists(head) and exists(base) and run("merge-base", "--is-ancestor", base, head).returncode != 0:
+        _error(result, f"git.base_commit {base!r} is not an ancestor of git.head_commit {head!r}")
+    current = run("rev-parse", "HEAD").stdout.strip()
+    if exists(head) and current == head:
+        # Ignore .traceweave/ — the checkpoint writes there itself, as git_state.collect does.
+        dirty = bool(run("status", "--porcelain", "--", ".", ":(exclude).traceweave").stdout.strip())
+        actual = "dirty" if dirty else "clean"
+        claimed = git.get("working_tree")
+        if claimed in ("clean", "dirty") and claimed != actual:
+            _error(result, f"git.working_tree claims {claimed!r} but the repository at HEAD is {actual!r}")
     return result

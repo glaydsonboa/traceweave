@@ -124,3 +124,60 @@ class TestVerify(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class TestRule7AndReality(unittest.TestCase):
+    """The four lies a structural verify used to accept (bench test of 24/09/2026)."""
+
+    def setUp(self):
+        from traceweave.verify import verify_against_repo
+        self.verify_against_repo = verify_against_repo
+        self.repo = new_repo()
+        self.cp = generated_checkpoint(self.repo)
+
+    def test_complete_with_not_run_tests_fails(self):
+        cp = copy.deepcopy(self.cp)
+        cp["status"] = "complete"
+        errors = " ".join(verify(cp).errors)
+        self.assertIn("not_run", errors)
+        self.assertIn("rule 7", errors)
+
+    def test_complete_without_evidence_fails(self):
+        cp = copy.deepcopy(self.cp)
+        cp["status"] = "complete"
+        cp["tests"] = [{"command": "pytest", "result": "passed", "evidence": None}]
+        cp["git"]["working_tree"] = "clean"
+        self.assertIn("no evidence", " ".join(verify(cp).errors))
+
+    def test_complete_with_evidence_and_clean_tree_passes(self):
+        cp = copy.deepcopy(self.cp)
+        cp["status"] = "complete"
+        cp["tests"] = [{"command": "pytest", "result": "passed", "evidence": "ci run 42: 12 passed"}]
+        cp["git"]["working_tree"] = "clean"
+        self.assertTrue(verify(cp).ok, verify(cp).errors)
+
+    def test_nonexistent_head_commit_caught_against_repo(self):
+        cp = copy.deepcopy(self.cp)
+        cp["git"]["head_commit"] = "deadbeef" * 5
+        self.assertTrue(verify(cp).ok)  # structurally valid: this is the lie a hash chain would seal
+        errors = " ".join(self.verify_against_repo(cp, self.repo).errors)
+        self.assertIn("does not exist", errors)
+
+    def test_false_clean_working_tree_caught_against_repo(self):
+        (self.repo / "untracked.txt").write_text("x\n", encoding="utf-8")
+        cp = copy.deepcopy(self.cp)
+        cp["git"]["working_tree"] = "clean"
+        errors = " ".join(self.verify_against_repo(cp, self.repo).errors)
+        self.assertIn("claims 'clean'", errors)
+
+    def test_true_checkpoint_passes_against_repo(self):
+        self.assertTrue(self.verify_against_repo(self.cp, self.repo).ok,
+                        self.verify_against_repo(self.cp, self.repo).errors)
+
+    def test_cli_verify_repo_flag_rejects_lie(self):
+        cp = copy.deepcopy(self.cp)
+        cp["git"]["head_commit"] = "deadbeef" * 5
+        path = self.repo / "lie.json"
+        path.write_text(json.dumps(cp), encoding="utf-8")
+        code, _ = run_cli("verify", str(path), "--repo", str(self.repo))
+        self.assertEqual(code, 1)
