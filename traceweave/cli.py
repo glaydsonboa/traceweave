@@ -4,8 +4,9 @@ Commands:
 
 - ``traceweave checkpoint`` — inspect the current Git repository and write a
   checkpoint JSON to ``.traceweave/checkpoints/<checkpoint_id>.json``.
-- ``traceweave verify <checkpoint.json>`` — verify a checkpoint against the
-  protocol rules. Exits non-zero when verification fails.
+- ``traceweave verify <checkpoint.json> [--repo PATH]`` — verify a checkpoint against the
+  protocol rules and, with ``--repo``, its Git claims against a real repository.
+  Exits non-zero when verification fails.
 """
 
 from __future__ import annotations
@@ -23,7 +24,7 @@ from .checkpoint import (
     write_checkpoint,
 )
 from .git_state import GitError, collect
-from .verify import verify
+from .verify import verify, verify_against_repo
 
 ALLOWED_GRAPH_STATUSES = ("not_applicable", "unknown")
 
@@ -64,6 +65,12 @@ def build_parser() -> argparse.ArgumentParser:
 
     verify_parser = subparsers.add_parser("verify", help="verify a checkpoint JSON file")
     verify_parser.add_argument("checkpoint_file", type=Path, help="path to the checkpoint JSON")
+    verify_parser.add_argument(
+        "--repo",
+        type=Path,
+        default=None,
+        help="also check the Git claims against this repository (head/base exist, ancestry, working tree)",
+    )
 
     return parser
 
@@ -124,6 +131,8 @@ def _verify(args: argparse.Namespace) -> int:
         return 2
 
     result = verify(checkpoint)
+    if args.repo is not None:
+        result.errors.extend(verify_against_repo(checkpoint, args.repo).errors)
     if result.ok:
         print(f"{args.checkpoint_file}: verification passed")
         return 0

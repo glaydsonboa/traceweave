@@ -192,3 +192,16 @@ def test_source_publication_requires_downloadable_artifact_at_each_destination()
         "download_reference": "notion-file-upload:def",
     }
     assert dual_materialized(pub)
+
+
+def load_tests(loader, standard_tests, pattern):
+    """Expose the pytest-style functions above to the standard unittest runner too.
+
+    Without this, `python -m unittest discover` reports OK while running none of them.
+    """
+    import unittest
+    suite = unittest.TestSuite()
+    for name, obj in sorted(globals().items()):
+        if name.startswith("test_") and callable(obj):
+            suite.addTest(unittest.FunctionTestCase(obj, description=name))
+    return suite

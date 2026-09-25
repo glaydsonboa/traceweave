@@ -104,15 +104,28 @@ See [`docs/continuity/DUAL_PROVENANCE_BOUNDARY.md`](docs/continuity/DUAL_PROVENA
 The repository contains a small Python reference implementation for Git-aware checkpoints and verification.
 
 ```bash
-python -m traceweave checkpoint \
-  --session-id demo-session \
-  --executor human \
-  --tests passed \
-  --structural-state synced \
-  --note "checkpoint created"
+pip install -e ".[test]"            # traceweave + tzdata; pytest for the test extra
 
-python -m traceweave verify
+# inside any Git repository with at least one commit
+python -m traceweave checkpoint --executor human --summary "checkpoint created"
+# → prints .traceweave/checkpoints/<checkpoint_id>.json
+
+# structural verification (SPEC.md §10, including rule 7)
+python -m traceweave verify .traceweave/checkpoints/<checkpoint_id>.json
+
+# plus a reality check of the Git claims against the repository
+python -m traceweave verify .traceweave/checkpoints/<checkpoint_id>.json --repo .
+
+# tests — both runners see the whole suite, V2 included
+python -m unittest discover -s tests
+pytest
 ```
+
+`verify` alone proves the record is well-formed. `--repo` also checks that `head_commit` and
+`base_commit` exist, that the base is an ancestor of the head, and that `working_tree` matches the
+repository. Those are the claims a hash chain would otherwise seal even when they were false at the
+moment of recording. A checkpoint that declares `complete` must carry evidence for every test and a
+clean working tree (SPEC.md §10 rule 7).
 
 The implementation is intentionally conservative: local execution, deterministic output, explicit evidence, and no requirement for cloud services or telemetry.
 
@@ -127,6 +140,12 @@ publish → exact-path commit + non-force push + remote SHA readback
 ```
 
 See [docs/MCP.md](docs/MCP.md).
+
+## Conduct
+
+Contributors, human or AI agent, follow [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md). It covers conduct
+toward people and conduct of evidence: no claim without evidence, and "done" means verified at the
+destination.
 
 ## Continuity-first direction
 
