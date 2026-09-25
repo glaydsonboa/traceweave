@@ -121,6 +121,9 @@ python -m unittest discover -s tests
 pytest
 ```
 
+**See it catch a lie:** `python examples/lie-detection/demo.py` plants four lies an AI agent could
+write into a checkpoint and shows which check catches each one ([details](examples/lie-detection/README.md)).
+
 `verify` alone proves the record is well-formed. `--repo` also checks that `head_commit` and
 `base_commit` exist, that the base is an ancestor of the head, and that `working_tree` matches the
 repository. Those are the claims a hash chain would otherwise seal even when they were false at the
