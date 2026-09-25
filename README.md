@@ -19,6 +19,7 @@ This is the main public research layer. It contains the evidence model, promotio
 3. **[Proven Governance](traceweave/Governan%C3%A7a%20comprovada/README.md)** — dual provenance, independent adversarial audit, and the daily provenance governor.
 4. **[Operational Causal Chain](research/agent-self-report/provenance/operational-causal-chain.md)** — from human authority through instruction, execution, lifecycle evidence, Git, readback, and closure.
 5. **[Traceweave V2 — Causal Continuity Protocol](docs/TRACEWEAVE_V2.md)** — START / RESUME / STOP, content identity, paired publication, destination-native identity, and readback.
+6. **[Contributions upstream](contributions/claude-code-transcripts/README.md)** — fixes sent to simonw/claude-code-transcripts so session transcripts keep what the human typed, with the code and the checks behind them.
 
 ---
 

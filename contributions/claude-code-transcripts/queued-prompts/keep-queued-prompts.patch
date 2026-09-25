@@ -1,0 +1,116 @@
+diff --git a/src/claude_code_transcripts/__init__.py b/src/claude_code_transcripts/__init__.py
+index e4854a3..fe0b64a 100644
+--- a/src/claude_code_transcripts/__init__.py
++++ b/src/claude_code_transcripts/__init__.py
+@@ -464,6 +464,28 @@ def parse_session_file(filepath):
+             return json.load(f)
+ 
+ 
++def _queued_user_prompt(obj):
++    """Return a user entry for a prompt queued while Claude was working, else None."""
++    if obj.get("type") != "attachment":
++        return None
++    attachment = obj.get("attachment") or {}
++    if attachment.get("type") != "queued_command":
++        return None
++    if attachment.get("commandMode") != "prompt":
++        return None
++    origin = attachment.get("origin")
++    if isinstance(origin, dict) and origin.get("kind") not in (None, "human"):
++        return None
++    prompt = attachment.get("prompt")
++    if not isinstance(prompt, str) or not prompt.strip():
++        return None
++    return {
++        "type": "user",
++        "timestamp": attachment.get("timestamp") or obj.get("timestamp", ""),
++        "message": {"role": "user", "content": prompt},
++    }
++
++
+ def _parse_jsonl_file(filepath):
+     """Parse JSONL file and convert to standard format."""
+     loglines = []
+@@ -477,6 +499,15 @@ def _parse_jsonl_file(filepath):
+                 obj = json.loads(line)
+                 entry_type = obj.get("type")
+ 
++                # A prompt typed while Claude is working is stored as a
++                # queued_command attachment and absorbed into the running turn;
++                # no separate "user" line is written for it. Keep human prompts,
++                # skip other queued commands such as task notifications.
++                queued = _queued_user_prompt(obj)
++                if queued is not None:
++                    loglines.append(queued)
++                    continue
++
+                 # Skip non-message entries
+                 if entry_type not in ("user", "assistant"):
+                     continue
+diff --git a/tests/test_generate_html.py b/tests/test_generate_html.py
+index 25c2822..3c61fb5 100644
+--- a/tests/test_generate_html.py
++++ b/tests/test_generate_html.py
+@@ -1124,6 +1124,62 @@ class TestParseSessionFile:
+         for entry in result["loglines"]:
+             assert entry["type"] in ("user", "assistant")
+ 
++    def test_jsonl_keeps_prompts_queued_while_claude_was_working(self, tmp_path):
++        """A prompt typed while Claude is busy is stored as a queued_command attachment.
++
++        Claude Code absorbs it into the running turn and never writes a separate
++        "user" line for it, so skipping every non-user/assistant line drops it.
++        """
++        lines = [
++            {
++                "type": "user",
++                "uuid": "u1",
++                "timestamp": "2026-09-24T17:48:00.000Z",
++                "message": {"role": "user", "content": "Clone the repo and test it"},
++            },
++            {
++                "type": "assistant",
++                "timestamp": "2026-09-24T17:48:10.000Z",
++                "message": {
++                    "role": "assistant",
++                    "content": [{"type": "text", "text": "Cloning now"}],
++                },
++            },
++            {
++                "type": "attachment",
++                "timestamp": "2026-09-24T17:49:21.871Z",
++                "attachment": {
++                    "type": "queued_command",
++                    "prompt": "I just created it",
++                    "commandMode": "prompt",
++                    "origin": {"kind": "human"},
++                    "source_uuid": "q1",
++                    "timestamp": "2026-09-24T17:49:21.871Z",
++                },
++            },
++            {
++                "type": "attachment",
++                "timestamp": "2026-09-24T17:49:30.000Z",
++                "attachment": {
++                    "type": "queued_command",
++                    "prompt": "<task-notification>done</task-notification>",
++                    "commandMode": "task-notification",
++                    "source_uuid": "q2",
++                },
++            },
++        ]
++        jsonl_file = tmp_path / "session.jsonl"
++        jsonl_file.write_text("\n".join(json.dumps(line) for line in lines))
++
++        result = parse_session_file(jsonl_file)
++
++        user_texts = [
++            e["message"]["content"] for e in result["loglines"] if e["type"] == "user"
++        ]
++        assert user_texts == ["Clone the repo and test it", "I just created it"]
++        queued = result["loglines"][-1]
++        assert queued["timestamp"] == "2026-09-24T17:49:21.871Z"
++
+     def test_jsonl_preserves_message_content(self):
+         """Test that message content is preserved correctly."""
+         fixture_path = Path(__file__).parent / "sample_session.jsonl"

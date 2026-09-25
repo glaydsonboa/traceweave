@@ -1,0 +1,10 @@
+{"type":"user","timestamp":"2026-01-01T10:00:00.000Z","message":{"role":"user","content":"Build the parser"}}
+{"type":"queue-operation","operation":"enqueue","timestamp":"2026-01-01T10:00:05.000Z","content":"Also add tests"}
+{"type":"attachment","timestamp":"2026-01-01T10:00:09.000Z","attachment":{"type":"queued_command","commandMode":"prompt","origin":{"kind":"human"},"prompt":"Also add tests","timestamp":"2026-01-01T10:00:09.000Z"}}
+{"type":"queue-operation","operation":"enqueue","timestamp":"2026-01-01T10:00:10.000Z","content":"<task-notification>background job finished</task-notification>"}
+{"type":"attachment","timestamp":"2026-01-01T10:00:11.000Z","attachment":{"type":"queued_command","commandMode":"task-notification","prompt":"<task-notification>background job finished</task-notification>"}}
+{"type":"queue-operation","operation":"enqueue","timestamp":"2026-01-01T10:00:20.000Z","content":"Then update the README"}
+{"type":"user","timestamp":"2026-01-01T10:01:00.000Z","message":{"role":"user","content":"Then update the README"}}
+{"type":"queue-operation","operation":"enqueue","timestamp":"2026-01-01T10:02:00.000Z","content":"Use this config:"}
+{"type":"user","timestamp":"2026-01-01T10:02:01.000Z","message":{"role":"user","content":"Use this config:\n# comment\nkey = value"}}
+{"type":"queue-operation","operation":"enqueue","timestamp":"2026-01-01T10:03:00.000Z","content":"Never mind"}
