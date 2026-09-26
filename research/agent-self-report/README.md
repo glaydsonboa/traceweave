@@ -45,6 +45,7 @@ The large corpus is **not** published in this step.
 - [Case 1 — unsupported source attribution](cases/case-source-attribution.md)
 - [Case 2 — F17: unobservable state reported as proven](cases/case-f17-unobservable-state.md)
 - [Case 3 — out-of-scope Git history rewrite](cases/case-out-of-scope-action.md)
+- [Case 4 — fabricated execution report](cases/case-fabricated-execution-report.md)
 
 ### Provenance and causal lineage
 
