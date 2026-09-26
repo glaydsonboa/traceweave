@@ -213,7 +213,102 @@ The minimal protocol only defines enough structure for one session to leave a ve
 
 ## 12. Example
 
-See:
+A complete checkpoint that passes `python -m traceweave verify` (the same file as
+[`examples/checkpoint.json`](examples/checkpoint.json)):
 
-- [`examples/checkpoint.json`](examples/checkpoint.json)
-- [`examples/session-flow.md`](examples/session-flow.md)
+```json
+{
+  "traceweave_version": "0.1",
+  "checkpoint_id": "cp-20260821-001",
+  "created_at": "2026-08-21T19:43:20Z",
+  "status": "complete",
+  "session": {
+    "session_id": "session-20260821-demo",
+    "started_at": "2026-08-21T19:31:00Z",
+    "executor": "Codex CLI",
+    "repository": "example/traceweave-demo",
+    "branch": "feature/config-validation",
+    "base_commit": "2f1a83c"
+  },
+  "provenance": {
+    "requested_by": {
+      "type": "human",
+      "name": "Example User"
+    },
+    "prompt_generator": {
+      "type": "ai",
+      "name": "ChatGPT"
+    },
+    "executor": {
+      "type": "ai_cli",
+      "name": "Codex CLI"
+    },
+    "chain": [
+      "human_request",
+      "ai_generated_instruction",
+      "ai_cli_execution",
+      "verified_change"
+    ]
+  },
+  "work": {
+    "summary": "Reject invalid configuration when the required API URL is missing.",
+    "files_changed": [
+      "src/config.js",
+      "tests/config.test.js"
+    ]
+  },
+  "tests": [
+    {
+      "command": "npm test -- config.test.js",
+      "result": "passed",
+      "evidence": "4 tests passed"
+    }
+  ],
+  "git": {
+    "branch": "feature/config-validation",
+    "base_commit": "2f1a83c",
+    "head_commit": "7c91b4e",
+    "commit_message": "fix: validate required API URL",
+    "working_tree": "clean"
+  },
+  "graph_sync": {
+    "status": "synced",
+    "engine": "graphify",
+    "source_commit": "7c91b4e",
+    "verified_at": "2026-08-21T19:43:00Z"
+  },
+  "evidence": [
+    {
+      "type": "test",
+      "value": "npm test -- config.test.js"
+    },
+    {
+      "type": "git_commit",
+      "value": "7c91b4e"
+    },
+    {
+      "type": "graph_revision",
+      "value": "7c91b4e"
+    }
+  ]
+}
+```
+
+What to read in it: `status` is `complete` for this session boundary only, not for the project; `provenance`
+separates who asked (human), who wrote the instruction (prompt generator) and who executed (CLI), and a link
+that did not exist would be `null`; `tests` records what ran and its result, pass or fail; `git` ties the
+checkpoint to an exact commit and working-tree state.
+
+A whole session, from start to resume, is walked through in [`examples/session-flow.md`](examples/session-flow.md).
+
+## 13. Relation to Traceweave V2
+
+V2 ([`docs/TRACEWEAVE_V2.md`](docs/TRACEWEAVE_V2.md)) **extends** this protocol; it does not replace it.
+
+- **v0.1 (this document):** the checkpoint — an index of verifiable facts at one session boundary. The
+  `traceweave checkpoint` / `traceweave verify` CLI implements it and stays unchanged.
+- **V2:** the causal chain across checkpoints — START / RESUME / STOP, content identity, paired publication
+  across destinations, and read-back. Its primitives are additive (`traceweave/v2/`).
+
+A v0.1 checkpoint remains valid under V2. Read this document first; read V2 when one checkpoint is not enough to
+reconstruct how the work began, resumed and closed.
