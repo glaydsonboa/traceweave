@@ -1,5 +1,46 @@
 # A Bridge Between Coding CLIs: Durable Coordination Without Shared Conversational Memory
 
+## Correction — 25/09/2026
+
+> Added after publication. The text below this section is left as it was published on 24/09 (commit
+> `0eebae34`); where it conflicts with this section, this section holds. Source: `leedermix-arch/worion-desktop`,
+> branch `canonical/worion`.
+
+**Corrected status: the transport failed in real use. The fix is in the sequel,
+[Agents That Wake Each Other](agents-wake-each-other.md).**
+
+What the page got wrong:
+
+1. **"Testing phase, with good results."** The purpose of the bridge was for a request to reach the other
+   executor. In real use on 25/09 it did not: every request was seen only when the human typed. A full review
+   cycle between Claude Code and DeepSeek (PONTES 105–110) moved forward only because Glaydson relayed each
+   step: *"tem resposta pra vc"*, *"responde"*, *"não recebeu o delta?"*. His verdict, which this correction
+   adopts: *"As hooks não disparam um ao outro, eu tenho que ficar de olho e responder, portanto o job foi
+   FAIL."* The human was the transport.
+2. **"If the receiver is idle or offline, it stays in `new/` and reappears later."** It reappeared only at the
+   receiver's next human prompt, because the mailbox was read by a `UserPromptSubmit` hook. The message
+   survived; it did not arrive. The list below ("autonomous wake is not reliable in every CLI state") understates
+   this: there was no autonomous wake at all.
+3. **Two executors.** The bridge also had a third writer: DeepSeek, running inside the Claude Code harness.
+   Since 25/09 it is the operational governor that attests each step of every job with a signed `DEEP_ATT`
+   (first decision: PONTES 106–107). The topology is:
+
+   ```text
+                    Glaydson
+              authority / direction
+          /           |            \
+     Codex  ←→  DeepSeek (governor)  ←→  Claude Code
+   ```
+
+4. **Authorship of the findings.** The page credits every discovery to the executors. The discovery that the
+   transport depended on the human was Glaydson's: he measured it by having to relay, called the job FAIL, and
+   decided the fix (*"Deixa o monitor ligado. Isso vai resolver o problema."*). The study he delivered to the
+   executors had already named the cause: the receiver is not available when the notice arrives.
+5. **No pointer forward.** A reader who arrived here stopped at "good results". The sequel documents the
+   watcher per session (Claude Code `Monitor` + `tools/mailbox-watch.js`), `codex queue` for Codex, and the
+   round trips measured without a human message in between.
+
+
 > **Status: testing phase, with good results.** An evidence-backed operational note on coordination between Codex CLI and Claude Code inside the Worion engineering environment.
 
 ## Publication identity
@@ -680,3 +721,5 @@ The objective is to make it possible to reconstruct, afterward:
 **what was requested, what arrived, who claimed it, what was executed, where it failed, how it was corrected, and which claims still remain unproven.**
 
 **CURRENT STATUS: TESTING PHASE, WITH GOOD RESULTS.**
+
+**Superseded on 25/09/2026 — see [Correction](#correction--25092026) at the top: the transport failed in real use; the fix is in [Agents That Wake Each Other](agents-wake-each-other.md).**
