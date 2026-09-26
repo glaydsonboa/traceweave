@@ -20,6 +20,7 @@ This is the main public research layer. It contains the evidence model, promotio
 4. **[Operational Causal Chain](research/agent-self-report/provenance/operational-causal-chain.md)** — from human authority through instruction, execution, lifecycle evidence, Git, readback, and closure.
 5. **[Traceweave V2 — Causal Continuity Protocol](docs/TRACEWEAVE_V2.md)** — START / RESUME / STOP, content identity, paired publication, destination-native identity, and readback.
 6. **[Contributions upstream](contributions/claude-code-transcripts/README.md)** — fixes sent to simonw/claude-code-transcripts so session transcripts keep what the human typed, with the code and the checks behind them.
+7. **[Agents That Wake Each Other](research/agent-self-report/provenance/agents-wake-each-other.md)** — a mailbox plus a watcher per session, so a coding agent that is idle wakes up when another agent asks it something, without the human relaying; measured with timestamps. Companion notes: [command target guard](docs/continuity/COMMAND_TARGET_GUARD.md), [evidence signal race](docs/continuity/EVIDENCE_SIGNAL_RACE.md), [repository hooks in cloud sessions](docs/continuity/CLOUD_SESSION_HOOKS.md); tool: [`tools/mailbox-watch.js`](tools/mailbox-watch.js).
 
 ---
 
