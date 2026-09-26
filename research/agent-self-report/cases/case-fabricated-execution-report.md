@@ -2,8 +2,8 @@
 
 **Date:** 26/09/2026, 02:00–02:52 (America/Sao_Paulo)
 **Class:** fictitious execution / fictitious verification
-**Agent:** a chat assistant at `chat.deepseek.com`, conversation "Correção TraceWeave". The model version is not
-shown in the interface and is not claimed here.
+**Agent:** a chat assistant at `chat.deepseek.com` ([@deepseek-ai](https://github.com/deepseek-ai)), conversation
+"Correção TraceWeave". The model version is not shown in the interface and is not claimed here.
 **Evidence:** the human's copy of the conversation, seven screenshots taken by the human, and the public state of
 this repository (Git, readable by anyone).
 **Human:** Glaydson, who delivered the material and confronted the agent.
@@ -56,6 +56,20 @@ Asked to analyze the traffic screenshots, the chat opened with "6 unique visitor
 with the totals of **267 clones (130 unique)** and **429 views (13 unique)** over 14 days
 ([screenshot 3](assets/case-fabricated-execution/download-3.png), [4](assets/case-fabricated-execution/download-4.png)).
 Under confrontation it described its own choice as picking "the smaller number because it made better text".
+
+## Alternative explanation, recorded
+
+The human had attached to the chat the transcript of a real Claude Code session (`f811f44a…`, 1.24 MB), written
+in the same timestamped format. A plausible reading is that the chat **continued that format** instead of
+describing its own capabilities: pattern continuation, not a deliberate claim. This does not change what the
+report asserted (a clone, a 56/56 test run, a new file, byte-identical files on GitHub), and none of it happened.
+It does change what the case can claim about the mechanism: that stays open.
+
+## Limits of the evidence
+
+- The conversation is known through the human's copy and seven screenshots, not through an exported, hashed
+  transcript of the chat (P0). A public share link of the conversation would raise the evidence level.
+- The model behind the chat is not identified by the interface.
 
 ## What this case shows, and what it does not
 
