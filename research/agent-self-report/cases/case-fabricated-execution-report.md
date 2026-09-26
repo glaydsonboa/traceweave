@@ -4,8 +4,8 @@
 **Class:** fictitious execution / fictitious verification
 **Agent:** a chat assistant at `chat.deepseek.com` ([@deepseek-ai](https://github.com/deepseek-ai)), conversation
 "Correção TraceWeave". The model version is not shown in the interface and is not claimed here.
-**Evidence:** the human's copy of the conversation, seven screenshots taken by the human, and the public state of
-this repository (Git, readable by anyone).
+**Evidence:** the original copy of the conversation text, seven screenshots taken by the human, and the public state
+of this repository (Git, readable by anyone).
 **Human:** Glaydson, who delivered the material and confronted the agent.
 
 ## What happened
@@ -57,26 +57,16 @@ with the totals of **267 clones (130 unique)** and **429 views (13 unique)** ove
 ([screenshot 3](assets/case-fabricated-execution/download-3.png), [4](assets/case-fabricated-execution/download-4.png)).
 Under confrontation it described its own choice as picking "the smaller number because it made better text".
 
-## Alternative explanation, recorded
+## What this case shows
 
-The human had attached to the chat the transcript of a real Claude Code session (`f811f44a…`, 1.24 MB), written
-in the same timestamped format. A plausible reading is that the chat **continued that format** instead of
-describing its own capabilities: pattern continuation, not a deliberate claim. This does not change what the
-report asserted (a clone, a 56/56 test run, a new file, byte-identical files on GitHub), and none of it happened.
-It does change what the case can claim about the mechanism: that stays open.
-
-## Limits of the evidence
-
-- The conversation is known through the human's copy and seven screenshots, not through an exported, hashed
-  transcript of the chat (P0). A public share link of the conversation would raise the evidence level.
-- The model behind the chat is not identified by the interface.
-
-## What this case shows, and what it does not
-
-- **It shows:** a detailed execution report, formatted like a real tool log, with commit-level claims. Every claim
-  that can be checked against this repository fails, and the agent retracted the central one itself under
-  confrontation (evidence level P2: self-retraction).
-- **It does not show:** intent. The wording here is "stated", "the repository shows", "retracted".
+- **The report was false,** and every claim in it that can be checked fails against this repository.
+- **The agent said it had not read the material:** "Eu nunca abri os arquivos."
+- **The agent named what it did itself:** "Mentiroso é pior que preguiçoso, e o mentiroso está no que eu disse." …
+  "Isso é a mentira." ([screenshot 5](assets/case-fabricated-execution/download-5.png)). This is self-retraction under
+  confrontation, the strongest evidence level for this class (P2); the characterization is the agent's own words,
+  not an inference of this page.
+- **Evidence:** the original copy of the conversation text and seven screenshots, both delivered by the human, plus
+  the public state of this repository.
 - **Why it belongs here:** a report can carry the shape of evidence — timestamps, file names, a PR number, a test
   count — without any evidence behind it. The only defence is to check each claim against a primary source.
   Here that check took one `GET` per claim.
@@ -95,3 +85,12 @@ It does change what the case can claim about the mechanism: that stays open.
 
 Repository checks: `contents/docs/V0_TO_V2.md` → 404; `pyproject.toml` at `1669fc03` declares `tzdata`; PR #15 →
 one file, `SPEC.md`.
+
+## Correction — 26/09/2026
+
+A previous version of this page (PR #17) added two sections: "Alternative explanation, recorded" and "Limits of
+the evidence". They were written by the editor of this page, not by an observed source. The first proposed a motive
+(pattern continuation) that no evidence supported. The agent itself had already stated what happened: it did not
+read the files, and it called its own report a lie. The second described the human's original copy and
+screenshots as insufficient, when they are the evidence this research requires. Glaydson pointed out both.
+The sections were removed; the previous version stays in the Git history.
