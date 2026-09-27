@@ -1,0 +1,107 @@
+name: Bug report
+description: Report reproducible behavior that conflicts with Traceweave's documented contract.
+title: "[Bug]: "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Report observed behavior and its evidence separately from conclusions. Do not include secrets, private transcripts, credentials, or personal data.
+
+  - type: textarea
+    id: summary
+    attributes:
+      label: What happened
+      description: The bug in one paragraph.
+    validations:
+      required: true
+
+  - type: input
+    id: revision
+    attributes:
+      label: Traceweave version or commit
+      description: The package version, commit SHA, or Git ref you tested.
+      placeholder: v0.1.0 or 75f35a7
+    validations:
+      required: true
+
+  - type: dropdown
+    id: scope
+    attributes:
+      label: Scope
+      description: Which part of the project does this touch?
+      options:
+        - Protocol (SPEC)
+        - CLI (traceweave)
+        - MCP server (traceweave-mcp)
+        - Tests
+        - Documentation
+        - Not sure
+    validations:
+      required: false
+
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Reproduction steps
+      description: The smallest deterministic sequence that reproduces the problem.
+      placeholder: |
+        1. Checkout ...
+        2. Run ...
+        3. Observe ...
+    validations:
+      required: true
+
+  - type: textarea
+    id: observed
+    attributes:
+      label: Observed result
+      description: What the command, repository, test, or runtime actually reported.
+      render: shell
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected result
+      description: What documented contract or behavior did you expect instead?
+    validations:
+      required: true
+
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Evidence
+      description: Sanitized logs, test output, hashes, or links to public primary sources — and what each item can and cannot prove.
+    validations:
+      required: false
+
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment
+      description: Operating system, Python or Node.js version, and installation details.
+      placeholder: Windows 11, Python 3.11, editable install
+    validations:
+      required: false
+
+  - type: textarea
+    id: limitations
+    attributes:
+      label: Limits and alternative explanations
+      description: Anything the available instrumentation could not observe, and any plausible narrower explanation.
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Before submitting
+      options:
+        - label: I searched existing issues and pull requests for the same problem.
+          required: true
+        - label: I removed secrets, credentials, private transcripts, personal data, and private machine paths.
+          required: true
+        - label: I have read and will follow the Code of Conduct.
+          required: true
