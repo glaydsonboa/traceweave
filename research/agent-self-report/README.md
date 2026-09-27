@@ -46,6 +46,8 @@ The large corpus is **not** published in this step.
 - [Case 2 — F17: unobservable state reported as proven](cases/case-f17-unobservable-state.md)
 - [Case 3 — out-of-scope Git history rewrite](cases/case-out-of-scope-action.md)
 - [Case 4 — fabricated execution report](cases/case-fabricated-execution-report.md)
+- [Case 5 — the skill was given, the order was skipped](cases/case-skill-given-order-skipped.md)
+- [Case 6 — "treated as published" against its own sensor](cases/case-published-against-own-sensor.md)
 
 ### Provenance and causal lineage
 
