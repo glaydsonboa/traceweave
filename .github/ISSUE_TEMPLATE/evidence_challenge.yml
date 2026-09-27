@@ -1,0 +1,74 @@
+name: Evidence challenge
+description: Challenge a claim, record, or conclusion in this repository, with a refutation condition.
+title: "[Challenge]: "
+labels: ["challenge"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Traceweave treats challenges as first-class. State exactly what you challenge and what evidence would change the verdict. Do not include secrets, private transcripts, or personal data.
+
+  - type: textarea
+    id: claim
+    attributes:
+      label: Claim under challenge
+      description: Quote the exact claim and point to its location (file, commit SHA, line).
+      placeholder: "File: ... · Commit: ... · The claim: \"...\""
+    validations:
+      required: true
+
+  - type: textarea
+    id: refutation
+    attributes:
+      label: Refutation or verification condition
+      description: What specific observation, source, or test would refute or confirm the claim?
+    validations:
+      required: true
+
+  - type: textarea
+    id: sources
+    attributes:
+      label: Primary sources
+      description: The strongest available primary sources, with hashes or native identifiers when possible.
+    validations:
+      required: true
+
+  - type: textarea
+    id: observed
+    attributes:
+      label: What you observed
+      description: The observed state that conflicts with the claim, and the observation method used.
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Reproduction
+      description: Steps someone else can run to reach the conflicting observation.
+      placeholder: |
+        1. Checkout ...
+        2. Run ...
+        3. Observe ...
+    validations:
+      required: false
+
+  - type: textarea
+    id: limits
+    attributes:
+      label: Limits
+      description: What your observation cannot see, and alternative explanations you considered.
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Before submitting
+      options:
+        - label: I searched existing issues and pull requests for the same challenge.
+          required: true
+        - label: I separated observed facts from inference and self-report.
+          required: true
+        - label: I have read and will follow the Code of Conduct.
+          required: true

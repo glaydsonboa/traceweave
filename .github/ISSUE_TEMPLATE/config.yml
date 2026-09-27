@@ -1,0 +1,8 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Traceweave specification
+    url: https://github.com/glaydsonboa/traceweave/blob/main/SPEC.md
+    about: Read the protocol specification before opening an issue about expected behavior.
+  - name: Contributing guide
+    url: https://github.com/glaydsonboa/traceweave/blob/main/CONTRIBUTING.md
+    about: How to contribute, and the evidence rules that apply to everything here.
