@@ -1,0 +1,37 @@
+name: Continuous Traffic Logger
+
+on:
+  schedule:
+    # Diario as 00:05 UTC (21:05 BRT) — o endpoint so guarda 14 dias; este workflow acumula para sempre.
+    - cron: '5 0 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  log-traffic:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Execute Traffic Backup Script
+        env:
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          # Preferir um PAT (secrets.TRAFFIC_TOKEN) com acesso de push: o GITHUB_TOKEN nativo
+          # nem sempre consegue ler os endpoints de trafego. Fallback: GITHUB_TOKEN.
+          TRAFFIC_TOKEN: ${{ secrets.TRAFFIC_TOKEN || secrets.GITHUB_TOKEN }}
+        run: python tools/backup-traffic.py
+
+      - name: Commit and Push Cumulative Logs
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action Traffic Logger"
+          git add research/traffic-data/
+          if git diff --cached --quiet; then
+            echo "Nenhuma metrica nova detectada hoje."
+          else
+            git commit -m "chrono: update cumulative traffic logs [skip ci]"
+            git push origin HEAD:main
+          fi
