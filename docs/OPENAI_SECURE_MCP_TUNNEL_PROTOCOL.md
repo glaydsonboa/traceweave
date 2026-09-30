@@ -59,11 +59,47 @@ Each transition requires its own evidence. If that evidence was not observed, th
 | `/healthz`, `/readyz`, `/metrics` and `/ui` expose local operational state | `DOCUMENTED` | OpenAI Secure MCP Tunnel documentation | A previous successful check does not prove current readiness |
 | ChatGPT, Codex and the Responses API can use a supported tunnel association | `DOCUMENTED` | OpenAI MCP documentation | Availability and permissions depend on the target organization or workspace |
 | Traceweave separates configuration, readiness, discovery and completed invocation | `DOCUMENTED` | this versioned protocol and its state model | The protocol defines the checks; it does not manufacture their results |
-| a particular private tunnel completed an end-to-end call | `UNKNOWN` in this public artifact | intentionally omitted | Requires a current sanitized runtime record from that deployment |
+| ChatGPT returned live state from a private MCP app | `EFFECT_PROVED` | observed ChatGPT result below + independently matched Git HEAD | Proves the user-visible read path; it is not a raw tunnel transport trace |
+| `send_agent_message` completed in this observation | `UNKNOWN` | the observed result explicitly says that no message had been sent | Capability discovery must not be promoted to execution |
 
-No private transcript, runtime key, tunnel identifier, local path or internal topology is used as
-public proof. The external claims can be checked against the primary sources; deployment claims must
-be reproduced in the target environment.
+No runtime key, tunnel identifier or local filesystem path is exposed. The external claims can be
+checked against the primary sources; the observed case below preserves the result and its limit.
+
+## Observed case evidence
+
+The following two captures were recorded at the ChatGPT consumer on 2026-09-30. They are published
+in their original bytes.
+
+### 1. Live bridge readback
+
+![ChatGPT with Worion Governanta selected, returning ready state, branch, exact Git HEAD and the exposed send_agent_message capability](assets/openai-secure-mcp-tunnel/01-live-bridge-readback.png)
+
+ChatGPT returned `ready`, branch `canonical/worion`, exact HEAD
+[`fdf9e49a60b76af7dda949cf50c696c315bd3219`](https://github.com/leedermix-arch/worion-desktop/commit/fdf9e49a60b76af7dda949cf50c696c315bd3219),
+and the exposed `send_agent_message` capability. The reported HEAD was independently matched against
+local and remote Git. The same result preserved the negative fact `codex_wake_configured: false` and
+stated that no message had been sent.
+
+```text
+file: docs/assets/openai-secure-mcp-tunnel/01-live-bridge-readback.png
+bytes: 85492
+sha256: 147710fc623f35fc9d5c7f8dbe7fed2e3f5843ccb00e4f9bb847e708e8fc7094
+```
+
+### 2. Governed-path consequence
+
+![ChatGPT describing the new governed path from ChatGPT through the MCP interface without generic shell or repository access](assets/openai-secure-mcp-tunnel/02-governed-path-confirmation.png)
+
+The second capture records the user-visible consequence: ChatGPT describes a direct governed path
+through the MCP interface and explicitly distinguishes it from shell or generic repository access.
+It complements the live readback; it does not claim that `send_agent_message` was executed after the
+first capture.
+
+```text
+file: docs/assets/openai-secure-mcp-tunnel/02-governed-path-confirmation.png
+bytes: 92995
+sha256: 272a4997c04cfff1c295c7277a9db7c6f45a75df1b7764f3e05fac8540fd48be
+```
 
 ## Causal chain
 
