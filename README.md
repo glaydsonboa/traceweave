@@ -187,6 +187,7 @@ The project is also exploring small adjacent tools that preserve the same eviden
 - [Protocol specification](SPEC.md)
 - [Model interoperability recipes](docs/model-interop/README.md)
 - [Multi-model prompt pipeline](docs/model-interop/PROMPT_PIPELINE.md)
+- [OpenAI Secure MCP Tunnel operating protocol](docs/OPENAI_SECURE_MCP_TUNNEL_PROTOCOL.md)
 - [Examples](examples/)
 
 ## Status
