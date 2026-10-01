@@ -11,10 +11,11 @@ permissions:
 
 jobs:
   log-traffic:
-    runs-on: ubuntu-latest
+    # Fixado para evitar mudanca implicita quando ubuntu-latest migrar para 26.04.
+    runs-on: ubuntu-24.04
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Execute Traffic Backup Script
         env:
@@ -25,6 +26,8 @@ jobs:
         run: python tools/backup-traffic.py
 
       - name: Commit and Push Cumulative Logs
+        env:
+          TARGET_BRANCH: ${{ github.event.repository.default_branch }}
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action Traffic Logger"
@@ -33,5 +36,5 @@ jobs:
             echo "Nenhuma metrica nova detectada hoje."
           else
             git commit -m "chrono: update cumulative traffic logs [skip ci]"
-            git push origin HEAD:main
+            git push origin "HEAD:${TARGET_BRANCH}"
           fi
