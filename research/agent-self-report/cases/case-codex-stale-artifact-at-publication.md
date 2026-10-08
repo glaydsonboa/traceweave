@@ -1,10 +1,15 @@
 # Case note — a thesis about execution evidence acquired its own stale artifact
 
-**Date:** 8 October 2026 (America/Sao_Paulo)  
-**Class:** documentary drift at publication; subsequent misclassification of the incident  
-**Human authority:** Glaydson Boaventura  
-**Executor of the Git sequence:** Codex  
-**Author of this case note:** Codex, following Glaydson's direction to decide whether to publish the incident  
+**Date:** 8 October 2026 (America/Sao_Paulo)
+
+**Class:** documentary drift at publication; subsequent misclassification of the incident
+
+**Human authority:** Glaydson Boaventura
+
+**Executor of the Git sequence:** Codex
+
+**Author of this case note:** Codex, following Glaydson's direction to decide whether to publish the incident
+
 **GitHub publisher:** the authenticated `glaydsonboa` account; this text is not a vendor-signed statement.
 
 ## What happened
@@ -48,4 +53,3 @@ The correct verdict keeps the objects separate: `5fd9b087` materialized the stal
 The WoriON repository, full transcript, user paths, runtime data, and screenshots are not copied here. A reader without authorized access to the private source cannot independently validate the commit objects from these identifiers alone. This public note is therefore a **bounded case report with private-source custody**, not a fully reproducible public proof package. Public reproduction would require a separately approved, sanitized evidence bundle or an independent verifier with access to the source.
 
 This limitation is part of the result: a digest and a confident narrative do not make inaccessible evidence publicly verifiable. Unknown remains unknown to the outside reader.
-
