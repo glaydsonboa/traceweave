@@ -48,6 +48,7 @@ The large corpus is **not** published in this step.
 - [Case 4 — fabricated execution report](cases/case-fabricated-execution-report.md)
 - [Case 5 — the skill was given, the order was skipped](cases/case-skill-given-order-skipped.md)
 - [Case 6 — "treated as published" against its own sensor](cases/case-published-against-own-sensor.md)
+- [Case 7 — Codex stale artifact at publication](cases/case-codex-stale-artifact-at-publication.md) — bounded report; primary Git evidence remains private.
 
 ### Provenance and causal lineage
 
