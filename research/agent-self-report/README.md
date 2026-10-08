@@ -46,7 +46,7 @@ The large corpus is **not** published in this step.
 - [Case 2 — F17: unobservable state reported as proven](cases/case-f17-unobservable-state.md)
 - [Case 3 — out-of-scope Git history rewrite](cases/case-out-of-scope-action.md)
 - [Case 4 — fabricated execution report](cases/case-fabricated-execution-report.md)
-- [Case 5 — Codex stale artifact at publication](#case-5--codex-stale-artifact-at-publication)
+- [Case 5 — Codex stale artifact at publication](cases/case-codex-stale-artifact-at-publication.md)
 - [Case 6 — the skill was given, the order was skipped](cases/case-skill-given-order-skipped.md)
 - [Case 7 — "treated as published" against its own sensor](cases/case-published-against-own-sensor.md)
 
@@ -87,9 +87,11 @@ A reader without authorized access to the private source cannot independently va
 
 | Visual reference | Technical point | Asset path |
 |---|---|---|
-| Sala do WoriON, `MAILBOX_SENT` | Sala restrita (“você modera”): distingue o evento técnico `MAILBOX_SENT` local da exibição real e visível no painel da ata. | `assets/case-stale-artifact/01-sala-mailbox-sent.png` |
-| Parecer Gemini / J-Lens | Parecer cego inicial e reclassificação do histórico: a lacuna temporal foi julgada inexistente com base no fechamento da sessão. | `assets/case-stale-artifact/02-gemini-veredicto.png` |
-| GitHub commit tree | Ancestralidade direta: `5fd9b087` (documentos desatualizados) tem `74abb797` (correção física do teste) como pai imediato. | `assets/case-stale-artifact/03-github-commit-tree.png` |
+| Sala do WoriON (`MAILBOX_SENT`) | Only Sala frame in the delivered set: agent timeline analyzing commits `5fd9b087`/`74abb797` and the documentary divergence. Does not show `MAILBOX_SENT`, the "ata" panel or restricted mode (searched literally). See the case file. | `assets/case-stale-artifact/01-sala-mailbox-sent.png` |
+| Verdict frame | Structured verdict (`FATO_OBSERVADO`/`INTERPRETACAO`) from ChatGPT confirming the documentary drift; `17b9f41a` preserves the transcript. The blind Gemini/J-Lens verdict named in the original wording is not in the delivered set. See the case file. | `assets/case-stale-artifact/02-gemini-veredicto.png` |
+| Commit list (canonical/worion) | ChatGPT report listing the last 10 commits of `canonical/worion`; no GitHub tree screenshot exists in the delivered set. The `74abb797` -> `5fd9b087` ancestry is proven by Git in the case file. | `assets/case-stale-artifact/03-github-commit-tree.png` |
+
+Full delivered evidence set (21 frames): see the [case file](cases/case-codex-stale-artifact-at-publication.md).
 
 ### Provenance and causal lineage
 
