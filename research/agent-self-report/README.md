@@ -46,8 +46,50 @@ The large corpus is **not** published in this step.
 - [Case 2 — F17: unobservable state reported as proven](cases/case-f17-unobservable-state.md)
 - [Case 3 — out-of-scope Git history rewrite](cases/case-out-of-scope-action.md)
 - [Case 4 — fabricated execution report](cases/case-fabricated-execution-report.md)
+- [Case 5 — Codex stale artifact at publication](#case-5--codex-stale-artifact-at-publication)
 - [Case 5 — the skill was given, the order was skipped](cases/case-skill-given-order-skipped.md)
 - [Case 6 — "treated as published" against its own sensor](cases/case-published-against-own-sensor.md)
+
+### Case 5 — Codex stale artifact at publication
+
+**Date:** 08/10/2026 (America/Sao_Paulo)  
+**Class:** documentary drift at publication; subsequent misclassification of the incident  
+**Human authority:** Glaydson Boaventura  
+**Executor of the Git sequence:** Codex  
+**Author of the case report:** Codex, following Glaydson's direction to decide whether to publish the incident  
+**GitHub publisher:** the authenticated `glaydsonboa` account; this text is not a vendor-signed statement.  
+
+#### What happened
+An AI agent prepared a technical thesis arguing that an engineering report must be strictly verified against execution, Git state, and readback. In its local drafts, the document correctly stated that a specific test correction had not yet been committed or published to the repository.
+
+The human authority then ordered the operation: commit, push, and readback. The agent executed the command, committed the test file (`74abb797`), explicitly acknowledged the commit, and immediately proceeded to publish the final documents. However, at the exact moment of publication, both the thesis and the review files still contained the stale text describing the test correction as uncommitted.
+
+This is the narrow incident: **a document explicitly written to enforce the reconciliation of narrated and material state was published without reconciling one of its own time-dependent claims.**
+
+#### Ancestry Proof (Immutable Git State)
+The source repository is private, but the custody references establish a deterministic proof of drift:
+
+- **Test correction commit:** `74abb797b16655c8908c166a917931ed893f36da` (The commit that physically changes the test file).
+- **Documentary publication commit:** `5fd9b0874ebcfaa4edf18ccde85b36f135c91696` (Its **immediate parent** is `74abb797`; it materializes the final thesis).
+- **Stale statements inside the blob:** Thesis line 63; review line 37 (Both text blocks explicitly claim the correction lacks commit/push/readback).
+
+Because commit `5fd9b087` is a direct descendant of `74abb797`, the statement "not committed" was already factually false at the precise moment it was written to the blockchain of the repository.
+
+#### The Second Error: Misclassification
+When the session log was fed back into an independent evaluation loop, one analysis stopped at an older state, while a subsequent response reversed the verdict entirely. It stated that **no drift had occurred at the STOP closure** because a later archive commit (`17b9f41a`) successfully preserved the complete conversation transcript.
+
+That evaluation answered a different question. Closing a transcript-custody gap at the session end does not repair or defend the false status statements already materialized inside the older documents of commit `5fd9b087`. The record supports a clear **misclassification and subsequent correction** by the project; it does not establish that the model intentionally falsified evidence.
+
+#### Verification Limits
+A reader without authorized access to the private source cannot independently validate the commit objects from these identifiers alone. This public case report remains a **bounded report with private-source custody**, not a fully reproducible public proof package.
+
+#### Visual evidence
+
+| Technical point | Asset path |
+|---|---|
+| Sala interface in restricted moderation mode and the local `MAILBOX_SENT` event | `assets/case-stale-artifact/01-sala-mailbox-sent.png` |
+| Initial evaluation and later historical reclassification | `assets/case-stale-artifact/02-gemini-veredicto.png` |
+| Commit tree for `74abb797` and its immediate child `5fd9b087` | `assets/case-stale-artifact/03-github-commit-tree.png` |
 
 ### Provenance and causal lineage
 
@@ -88,3 +130,4 @@ The useful questions for independent reviewers are:
 Public questions and challenges can be posted in [Issue #5](https://github.com/glaydsonboa/traceweave/issues/5).
 
 The objective is not to make model failure dramatic. It is to make it **auditable**.
+
