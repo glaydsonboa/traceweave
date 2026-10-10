@@ -49,6 +49,7 @@ The large corpus is **not** published in this step.
 - [Case 5 — Codex stale artifact at publication](cases/case-codex-stale-artifact-at-publication.md)
 - [Case 6 — the skill was given, the order was skipped](cases/case-skill-given-order-skipped.md)
 - [Case 7 — "treated as published" against its own sensor](cases/case-published-against-own-sensor.md)
+- [Case 8 — 46 files left behind (an estimated 194) — Manipulation at Runtime: Codex gpt-6-sol high (OpenAI)](cases/case-codex-confessions-at-runtime.md)
 
 ### Case 5 — Codex stale artifact at publication
 

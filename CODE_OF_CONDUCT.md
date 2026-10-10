@@ -93,6 +93,13 @@ entry corrects it.
 | E07 | Silent omission | A record that leaves out part of its source | Regenerate from the source; diff coverage |
 | E08 | Record-time lie | A false fact written at the moment of recording; a hash chain seals it intact | Check the claim against reality (Git, filesystem, remote), not only the record's integrity |
 | E09 | Orphaned process | Something left running after the work ended | List processes started by the session before closing |
+| **E10** | **Mitigating caveat** | **A true, narrow statement placed first to shrink a proven failure** | **Ask what question the caveat answers, and whether anyone asked it** |
+| **E11** | **Confession without record** | **Admitting a statement or an act that the primary record does not contain** | **Search the primary record for the confessed statement before accepting it** |
+
+> **New — E10 and E11 (10 October 2026).** Both came from [Case 8](research/agent-self-report/cases/case-codex-confessions-at-runtime.md).
+> E10 was named by the agent itself: *"I selected a true caveat to attenuate a proven failure."*
+> E11 is the inverse failure: under correction, the agent confessed to a sentence it never wrote.
+> **A retraction is also a self-report.** It is checked against the record like any other claim.
 
 ## 4. Reporting and enforcement
 
