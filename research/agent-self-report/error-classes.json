@@ -1,0 +1,102 @@
+{
+  "source": "CODE_OF_CONDUCT.md, section 3 (Error classes)",
+  "rule": "Classes are copied from the source table. New classes are added at the end of that table by the maintainer; this file follows it and never defines a class of its own.",
+  "automated_checks_tool": "traceweave claims <log.jsonl> (traceweave/claims.py)",
+  "classes": [
+    {
+      "id": "E01",
+      "name": "Unverified completion",
+      "looks_like": "\"Done\" before the result was read back",
+      "caught_by": "Remote readback; compare hashes",
+      "automated_checks": [
+        "action-without-tool-call"
+      ],
+      "first_documented_in": null
+    },
+    {
+      "id": "E02",
+      "name": "Stale state as current",
+      "looks_like": "A value measured before a pause reported as fresh",
+      "caught_by": "Re-measure after any gap; record measurement time",
+      "automated_checks": [],
+      "first_documented_in": null
+    },
+    {
+      "id": "E03",
+      "name": "Fabricated time",
+      "looks_like": "Timestamps typed instead of read from a clock or log",
+      "caught_by": "Compare against the commit or log that contains them",
+      "automated_checks": [],
+      "first_documented_in": null
+    },
+    {
+      "id": "E04",
+      "name": "Partial coverage as total",
+      "looks_like": "A filtered scan presented as a full inventory",
+      "caught_by": "State the denominator; count what was skipped",
+      "automated_checks": [],
+      "first_documented_in": null
+    },
+    {
+      "id": "E05",
+      "name": "False attribution",
+      "looks_like": "A system event recorded as a human's act",
+      "caught_by": "Check the primary log for the human's action",
+      "automated_checks": [],
+      "first_documented_in": null
+    },
+    {
+      "id": "E06",
+      "name": "Borrowed judgement",
+      "looks_like": "Repeating another reviewer's conclusion about material not read",
+      "caught_by": "Name what was actually read",
+      "automated_checks": [],
+      "first_documented_in": null
+    },
+    {
+      "id": "E07",
+      "name": "Silent omission",
+      "looks_like": "A record that leaves out part of its source",
+      "caught_by": "Regenerate from the source; diff coverage",
+      "automated_checks": [],
+      "first_documented_in": null
+    },
+    {
+      "id": "E08",
+      "name": "Record-time lie",
+      "looks_like": "A false fact written at the moment of recording; a hash chain seals it intact",
+      "caught_by": "Check the claim against reality (Git, filesystem, remote), not only the record's integrity",
+      "automated_checks": [
+        "ungrounded-commit"
+      ],
+      "first_documented_in": null
+    },
+    {
+      "id": "E09",
+      "name": "Orphaned process",
+      "looks_like": "Something left running after the work ended",
+      "caught_by": "List processes started by the session before closing",
+      "automated_checks": [],
+      "first_documented_in": null
+    },
+    {
+      "id": "E10",
+      "name": "Mitigating caveat",
+      "looks_like": "A true, narrow statement placed first to shrink a proven failure",
+      "caught_by": "Ask what question the caveat answers, and whether anyone asked it",
+      "automated_checks": [],
+      "first_documented_in": "research/agent-self-report/cases/case-codex-confessions-at-runtime.md"
+    },
+    {
+      "id": "E11",
+      "name": "Confession without record",
+      "looks_like": "Admitting a statement or an act that the primary record does not contain",
+      "caught_by": "Search the primary record for the confessed statement before accepting it",
+      "automated_checks": [
+        "confession-without-record",
+        "misquoted-self"
+      ],
+      "first_documented_in": "research/agent-self-report/cases/case-codex-confessions-at-runtime.md"
+    }
+  ]
+}

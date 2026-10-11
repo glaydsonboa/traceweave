@@ -7,6 +7,12 @@ Commands:
 - ``traceweave verify <checkpoint.json> [--repo PATH]`` — verify a checkpoint against the
   protocol rules and, with ``--repo``, its Git claims against a real repository.
   Exits non-zero when verification fails.
+- ``traceweave claims <log.jsonl> [--repo PATH]`` — compare what an agent said
+  with what its native log records (Codex rollout or Claude Code session JSONL).
+  Exits non-zero when there are findings.
+- ``traceweave tracetrack [--port 7317] [--workdir PATH] [--repo PATH]`` — local
+  web page (127.0.0.1 only) over the session logs and ``claims``, with a job
+  composer gated by a PROMPT_ID delivered out of band.
 """
 
 from __future__ import annotations
@@ -71,6 +77,24 @@ def build_parser() -> argparse.ArgumentParser:
         default=None,
         help="also check the Git claims against this repository (head/base exist, ancestry, working tree)",
     )
+
+    claims = subparsers.add_parser(
+        "claims",
+        help="compare what an agent said with what its native log records (Codex rollout or Claude Code JSONL)",
+    )
+    claims.add_argument("log", type=Path, help="native agent log (.jsonl)")
+    claims.add_argument("--repo", type=Path, action="append", default=[],
+                        help="repository used to resolve cited commits; repeatable")
+    claims.add_argument("--since", help="only report findings at or after this ISO timestamp (UTC)")
+    claims.add_argument("--until", help="only report findings before this ISO timestamp (UTC)")
+    claims.add_argument("--json", action="store_true", help="print the report as JSON")
+
+    tracetrack = subparsers.add_parser("tracetrack", help="local web page over session logs, claims and jobs")
+    tracetrack.add_argument("--port", type=int, default=7317, help="port on 127.0.0.1; default 7317")
+    tracetrack.add_argument("--workdir", type=Path, default=Path.cwd(),
+                            help="directory where jobs run; default: current directory")
+    tracetrack.add_argument("--repo", type=Path, action="append", default=[],
+                            help="repository used to resolve cited commits; repeatable")
 
     return parser
 
@@ -142,6 +166,28 @@ def _verify(args: argparse.Namespace) -> int:
     return 1
 
 
+def _claims(args: argparse.Namespace) -> int:
+    import json
+
+    from .claims import audit, format_report
+
+    try:  # Windows consoles default to cp1252; findings carry accents and dashes
+        sys.stdout.reconfigure(encoding="utf-8")
+    except (AttributeError, ValueError):
+        pass
+    try:
+        report = audit(args.log, repos=args.repo, since=args.since, until=args.until)
+    except OSError as exc:
+        print(f"traceweave: error: cannot read {args.log}: {exc}", file=sys.stderr)
+        return 2
+    if args.json:
+        print(json.dumps(report, ensure_ascii=False, indent=2))
+    else:
+        for line in format_report(report):
+            print(line)
+    return 1 if report["findings"] else 0
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = build_parser()
     args = parser.parse_args(argv)
@@ -149,6 +195,11 @@ def main(argv: list[str] | None = None) -> int:
         return _checkpoint(args)
     if args.command == "verify":
         return _verify(args)
+    if args.command == "claims":
+        return _claims(args)
+    if args.command == "tracetrack":
+        from .tracetrack import serve
+        return serve(args.port, args.workdir.resolve(), [r.resolve() for r in args.repo])
     parser.print_help()
     return 0
 

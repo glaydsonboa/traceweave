@@ -25,3 +25,6 @@ traceweave-mcp = "traceweave.mcp_server:main"
 
 [tool.setuptools.packages.find]
 include = ["traceweave*"]
+
+[tool.setuptools.package-data]
+traceweave = ["tracetrack_static/*"]
