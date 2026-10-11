@@ -9,6 +9,11 @@ on:
 permissions:
   contents: write
 
+# Uma execucao por vez: duas coletas simultaneas (agendada + manual) nao disputam o push.
+concurrency:
+  group: traffic-logger
+  cancel-in-progress: false
+
 jobs:
   log-traffic:
     # Fixado para evitar mudanca implicita quando ubuntu-latest migrar para 26.04.
@@ -36,5 +41,20 @@ jobs:
             echo "Nenhuma metrica nova detectada hoje."
           else
             git commit -m "chrono: update cumulative traffic logs [skip ci]"
-            git push origin "HEAD:${TARGET_BRANCH}"
+            # O checkout tem profundidade 1: se outro escritor avancar o branch depois dele, o push
+            # direto e rejeitado (non-fast-forward). Integra o que chegou e tenta de novo; falha de
+            # verdade (conflito persistente) derruba o passo em vez de passar em silencio.
+            pushed=0
+            for attempt in 1 2 3; do
+              if git pull --rebase origin "${TARGET_BRANCH}" && git push origin "HEAD:${TARGET_BRANCH}"; then
+                pushed=1
+                break
+              fi
+              git rebase --abort 2>/dev/null || true
+              sleep $((attempt * 5))
+            done
+            if [ "$pushed" != 1 ]; then
+              echo "push falhou apos 3 tentativas" >&2
+              exit 1
+            fi
           fi
