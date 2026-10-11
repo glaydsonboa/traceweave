@@ -42,7 +42,10 @@ def get(endpoint):
         return json.loads(resp.read().decode("utf-8"))
 
 
-def read_rows(filepath):
+def read_rows(filepath, key=lambda row: row[0]):
+    """Le o CSV como {chave: linha}. A chave de leitura TEM de ser a mesma usada na escrita:
+    em popular_content_history.csv a chave e data+caminho; com a chave so da data, cada execucao
+    colapsava os dias anteriores em uma linha por data (defeito medido em 11/10/2026)."""
     rows = {}
     if os.path.exists(filepath):
         with open(filepath, encoding="utf-8", newline="") as f:
@@ -50,7 +53,7 @@ def read_rows(filepath):
             next(reader, None)
             for row in reader:
                 if row:
-                    rows[row[0]] = row
+                    rows[key(row)] = row
     return rows
 
 
@@ -75,7 +78,7 @@ def update_time_series(endpoint, filepath, header):
 
 def update_popular(filepath, header):
     entries = get("popular/paths")  # array no topo
-    rows = read_rows(filepath)
+    rows = read_rows(filepath, key=lambda row: f"{row[0]}_{row[1]}")
     for entry in entries:
         key = f"{TODAY}_{entry['path']}"
         rows[key] = [TODAY, entry["path"], str(entry["count"]), str(entry["uniques"])]
