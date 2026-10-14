@@ -2,7 +2,7 @@
 
 **14 October 2026 · Public evidence summary · Private source under custody**
 
-Worion is Glaydson Boaventura's proprietary AI system, developed under his direction with Claude Code, Codex and DeepSeek. This page reports one controlled end-to-end run. It shows what the preserved runtime records support, where the test contradicted its own hypothesis, and how a reviewer with authorized access can check the original bytes. It does not release Worion's source code, credentials, raw reasoning or unredacted runtime logs.
+Worion is Glaydson Boaventura's proprietary AI system, developed under his direction with Claude Code, Codex and DeepSeek. This page reports one controlled end-to-end run. It shows what the preserved runtime records support, where its measurements differed from the test brief, and how a reviewer with authorized access can check the original bytes. It does not release Worion's source code, credentials, raw reasoning or unredacted runtime logs.
 
 The question was concrete: when Worion receives a direct question, does the observed route use one answering AI and no external research? When it receives a research question, which AI and source providers actually participate? A model named in configuration was not counted as a call. An attempted provider that failed was not counted as a contributor.
 
@@ -24,9 +24,11 @@ Five turns were completed: two initial direct-question attempts, two repeated di
 | `turn-20261014204520-cpx1wk` | Direct | One DeepSeek answering leg; no research cycle in the trace | 906 characters | **Proved within the observed trace** |
 | `turn-20261014204751-k1tnu4` | Direct | One DeepSeek answering leg; no research cycle in the trace | 2,375 characters | **Proved within the observed trace** |
 | `turn-20261014204830-x5h9zs` | Direct | One DeepSeek answering leg; no research cycle in the trace | 1,121 characters | **Proved within the observed trace** |
-| `turn-20261014205016-cgn79l` | Research | DeepSeek in two SSE legs; Gemini grounding in two successful research cycles; Brave in two source calls; two failed Perplexity attempts (HTTP 401) | 3,051 characters in aggregate | **Two AI providers proved; exactly two model calls contradicted** |
+| `turn-20261014205016-cgn79l` | Research | DeepSeek in two SSE legs; Gemini grounding in two successful research cycles; Brave in two source calls; two failed Perplexity attempts (HTTP 401) | 3,051 characters in aggregate | **Two AIs proved (DeepSeek answers, Gemini researches); four model invocations measured** |
 
 For the four direct turns, the answering model recorded by the trace is `deepseek-v4-pro`. For the research turn, the records show two distinct AI providers and four model invocations: two DeepSeek legs and two Gemini grounding cycles. The exact Gemini model name is not established by the runtime records. Brave supplied search results; Perplexity supplied none. The two research cycles produced 43 deduplicated source results in total. These counts describe this run, not every possible Worion route.
+
+In the research turn the operator's design held as stated: DeepSeek received the question and produced the reasoning, Gemini grounding and Brave carried out the searches, and the results came back to DeepSeek, which delivered a 4,339-character answer. The completion record shows `persistence_status=completed`, and the console summary shows `errors=0 warnings=0`. In one direct turn on the broken-stick problem, the answer was the exact value 1/4, which is the correct result. These are observations of this run, not a benchmark.
 
 The local Cubo recorded retrieved items in all five turns but was in shadow mode (`influenced_response=false`). In the research tool, a separate Cubo ranking step reordered the source pool. J-Lens recorded the presence and size of reasoning. The final reasoning text is preserved for each direct turn and for the final research cycle. The first research cycle is represented by its length and SHA-256 in the completion record, but its full text was not recovered from the inspected artifacts. None of the five traces proves persisted J-Lens learning.
 
@@ -69,9 +71,17 @@ At the declared source commit, the published [scope](source-line-scope.json) and
 
 The count includes blank lines and comments. It excludes documentation, runtime data and the generated, archive, vendor and build paths named in the published scope. It is a Git-tree measurement at `d8589d8c…`, not a measurement of the dirty runtime worktree. Git does not prove which model wrote each line, so **244,922 is not a claim of 244,922 AI-generated lines**. It describes the codebase built through this human-directed, multi-agent workflow. The exact output is preserved in [source-line-result.json](source-line-result.json).
 
+For scale and age: the Worion repository was created on 11 April 2026, about six months before this test, and its main branch holds more than 3,400 commits since that date. The two AIs that took part in the research turn ran inside this versioned codebase of 244,922 measured physical lines.
+
+## Correction to an earlier reading of this page
+
+The first version of this page, and the automated evaluation behind it, treated a call-count criterion as if it were the operator's hypothesis. The test brief had turned the hypothesis into "exactly two model calls". The operator's hypothesis was about **which AIs take part**: one AI answers a direct question; for a research question, two AIs take part, DeepSeek (receives the question, produces the reasoning, receives the results) and Gemini (searches), with Brave as a source. The run **confirmed** that hypothesis.
+
+The count of four invocations (two DeepSeek legs and two Gemini grounding cycles) is a measurement of how those two AIs worked in this run. It does not contradict the two-AI design, and the earlier wording that the hypothesis "failed" was a misreading. The brief's literal criterion did not hold, and that is recorded as a measurement difference. Three real limits remain below: the unrun second research turn, the unrecovered text of the first reasoning cycle, and the dirty worktree.
+
 ## What this proof does not claim
 
-- The research hypothesis of **exactly two model calls** failed. The observed research turn used two AI providers across four invocations.
+- The brief's literal criterion of **exactly two model calls** did not hold: the research turn used two AIs across four invocations. This is a measurement difference, not a failed two-AI hypothesis (see the correction above).
 - A second research turn was planned but not run.
 - The first research reasoning cycle has a recorded hash and length, but its complete text is not available in the inspected files.
 - A screenshot corroborates what the interface displayed; it is not a substitute for native runtime records.
