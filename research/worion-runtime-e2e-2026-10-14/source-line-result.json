@@ -1,0 +1,11 @@
+{
+  "commit": "d8589d8cee461812a4d7101fb237c2f729b12b84",
+  "groups": {
+    "application_and_cli": {"files": 283, "physical_lines": 120630},
+    "automation_and_migrations": {"files": 300, "physical_lines": 67007},
+    "tests": {"files": 418, "physical_lines": 57285}
+  },
+  "method": "git grep -I -c -e '^' over the published scope; blank and comment lines included",
+  "total_files": 1001,
+  "total_physical_lines": 244922
+}

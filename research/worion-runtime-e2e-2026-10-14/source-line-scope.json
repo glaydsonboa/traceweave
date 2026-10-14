@@ -1,0 +1,21 @@
+{
+  "schema": "traceweave.source-line-scope.v1",
+  "include_roots": [
+    "js", "css", "services", "worion-api", "web", "connectors", "cli-agent",
+    "scripts", "tests", "tools", "infra", "sql", "migrations"
+  ],
+  "extensions": [
+    ".js", ".jsx", ".mjs", ".cjs", ".ts", ".tsx", ".py",
+    ".css", ".scss", ".html", ".sql", ".ps1", ".sh"
+  ],
+  "exclude_directory_names": [
+    "node_modules", "dist", "vendor", "build", "coverage", ".venv", ".claude",
+    ".vscode", "backup", "backups", "generated", "archive", "archives", ".tmp"
+  ],
+  "exclude_filename_regex": "(?i)(backup|overwrite|\\.min\\.).*\\.(js|py|css)$",
+  "groups": {
+    "application_and_cli": ["js", "css", "services", "worion-api", "web", "connectors", "cli-agent"],
+    "automation_and_migrations": ["scripts", "tools", "infra", "sql", "migrations"],
+    "tests": ["tests"]
+  }
+}

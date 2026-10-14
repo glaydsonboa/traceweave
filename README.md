@@ -22,6 +22,7 @@ This is the main public research layer. It contains the evidence model, promotio
 6. **[Contributions upstream](contributions/claude-code-transcripts/README.md)** — fixes sent to simonw/claude-code-transcripts so session transcripts keep what the human typed, with the code and the checks behind them.
 7. **[Agents That Wake Each Other](research/agent-self-report/provenance/agents-wake-each-other.md)** — a mailbox plus a watcher per session, so a coding agent that is idle wakes up when another agent asks it something, without the human relaying; measured with timestamps. Companion notes: [command target guard](docs/continuity/COMMAND_TARGET_GUARD.md), [evidence signal race](docs/continuity/EVIDENCE_SIGNAL_RACE.md), [repository hooks in cloud sessions](docs/continuity/CLOUD_SESSION_HOOKS.md); tool: [`tools/mailbox-watch.js`](tools/mailbox-watch.js).
 8. **[ID Generators](docs/continuity/ID_GENERATORS.md)** — who generates which identifier in the causal chain (prompt, execution, blueprint, review, attestation, entry, publication pair), and [`tools/generate-ids.js`](tools/generate-ids.js), which generates them.
+9. **[Worion runtime E2E proof](research/worion-runtime-e2e-2026-10-14/README.md)** — a public, hash-anchored summary of a private multi-agent system, including observed direct and research routes, codebase size, custody hashes and explicit limits.
 
 ---
 
