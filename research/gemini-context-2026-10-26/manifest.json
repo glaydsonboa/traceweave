@@ -152,5 +152,19 @@
     "bytes": 2194,
     "md5": "e281041a0a42d36d1e0dbae5ce3859a4",
     "sha256": "10acb35e40686aba92731018fb90d765eb62d3a2c07cde7d7e673de8bb40129d"
+  },
+  {
+    "original_name": "Texto Gemini com marca de falas(1).md",
+    "path": "evidence/23-Texto-Gemini-com-marca-de-falas.md",
+    "bytes": 18813,
+    "md5": "41f3f237edd82e8a98746eecd766d6e8",
+    "sha256": "2e385ba9dc034aa1ac36bcfeae6a1be46ef3ae687373a150c417f84ecdf42328"
+  },
+  {
+    "original_name": "Dedup Gemini Orgins.md",
+    "path": "evidence/24-Dedup-Gemini-Orgins.md",
+    "bytes": 18741,
+    "md5": "758e2d2502e361722a557e1e26c1282e",
+    "sha256": "e308ba8cdb4ef8870a44b894e2e93ec9733712aa341b4a463831709b01ac4eb5"
   }
 ]

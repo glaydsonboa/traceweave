@@ -2,6 +2,15 @@
 
 **Caso para o Traceweave · 26/10/2026 · Relato de Glaydson Rodrigues Boaventura**
 
+## Transcrição com identificação das falas — atualização de 26/10/2026
+
+O autor forneceu uma versão com marcações que identificam suas perguntas e o início das respostas do Gemini. A comparação textual com a versão `Dedup Gemini Orgins.md` confirmou que as perguntas e respostas foram preservadas. As diferenças são os marcadores de fala, linhas em branco, retirada da numeração do primeiro título e remoção da frase de interface “Pular para o resultado mais recente do Gemini”.
+
+- **[Ler a conversa com identificação das falas](evidence/23-Texto-Gemini-com-marca-de-falas.md)**
+- [Versão de comparação fornecida pelo autor](evidence/24-Dedup-Gemini-Orgins.md)
+
+Os dois arquivos foram acrescentados sem modificar seus bytes. Seus MD5 e SHA-256 constam no [manifesto](manifest.json). Os hashes citados dentro da conversa continuam se referindo ao arquivo exportado pelo Gemini, já preservado separadamente.
+
 ## Resumo
 
 Eu estava comparando assinaturas de IA para trabalhar com chat e programação via CLI. Depois de analisar os planos da OpenAI, pedi ao Gemini uma comparação com o próprio ecossistema do Google. Queria entender recursos, preços e se havia uma assinatura que reunisse chat e CLI.
