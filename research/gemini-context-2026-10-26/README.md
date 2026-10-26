@@ -1,4 +1,14 @@
-# Crítica Construtiva: Vou dar uma ideia gratuita para o Google.
+# Quando a concorrência ajuda a concorrência.
+
+> **Uma crítica construtiva.**
+
+**[Google](https://about.google/) · [Gemini](https://gemini.google.com/) · [Discussão original no Reddit](https://www.reddit.com/r/ProgramadoresBrasil/comments/1xg1002/cr%C3%ADtica_construtiva_vou_dar_uma_ideia_gratuita/) · [Transcrição com identificação das falas](evidence/23-Texto-Gemini-com-marca-de-falas.md)**
+
+Pedi ao Gemini informações sobre os pacotes do próprio Google. Ele explicou muito bem os produtos da OpenAI — e, quando o corrigi, voltou a falar do ChatGPT.
+
+![O usuário corrige o foco da conversa, mas o Gemini anuncia que voltará aos pacotes da OpenAI](evidence/02-image-20261026-134455.png)
+
+*O momento decisivo: a correção é reconhecida verbalmente, mas executada na direção contrária.*
 
 **Caso para o Traceweave · 26/10/2026 · Relato de Glaydson Rodrigues Boaventura**
 
@@ -18,6 +28,20 @@ Eu estava comparando assinaturas de IA para trabalhar com chat e programação v
 O Gemini chegou a apresentar opções do Google. Mas, nas perguntas seguintes, perdeu o referente da conversa: voltou aos preços da OpenAI, respondeu sobre ferramentas genéricas de desenvolvimento e, quando pedi explicitamente que falasse dos próprios produtos, afirmou que o assunto era exclusivamente OpenAI e ChatGPT.
 
 O problema central foi uma sequência de perda de contexto e recuperação malsucedida. A resposta continuou organizada e confiante enquanto se afastava da decisão que eu precisava tomar.
+
+## O caso em três telas
+
+### 1. A pergunta sobre um pacote Google com chat e CLI
+
+![Pergunta sobre a existência de um pacote integrado de chat e CLI](evidence/19-image-9.png)
+
+### 2. O desvio para ferramentas e arquiteturas genéricas
+
+![Resposta que troca a pergunta comercial por uma lista de ferramentas e uma arquitetura customizada](evidence/01-image-10.png)
+
+### 3. O retorno aos valores da OpenAI
+
+![Resposta do Gemini listando novamente valores dos planos ChatGPT](evidence/05-image-20261026-135902.png)
 
 ## O que eu precisava decidir
 
@@ -104,7 +128,7 @@ Para quem usa IA como ferramenta de trabalho, reconhecer verbalmente um erro só
 
 ## Material de evidência
 
-Fonte textual: **Markdown colado.md**, fornecido pelo autor como transcrição da conversa. Evidências visuais: dez screenshots anexados. Este documento é uma análise do material recebido, sem acesso aos logs internos ou ao histórico de ferramentas do Gemini e sem consulta externa de preços.
+Fonte textual: **Markdown colado.md**, fornecido pelo autor como transcrição da conversa. Evidências visuais: 19 screenshots anexados. Este documento é uma análise do material recebido, sem acesso aos logs internos ou ao histórico de ferramentas do Gemini e sem consulta externa de preços.
 
 | Arquivo | Trecho relevante |
 | --- | --- |
@@ -137,7 +161,11 @@ Esses hashes identificam os bytes do arquivo exportado, não a conversa inteira.
 
 Assistência editorial e conferência de arquivos: ChatGPT/Codex. Relato e autorização de publicação: Glaydson Rodrigues Boaventura.
 
-## Galeria de evidências
+## Galeria completa de evidências
+
+<details>
+<summary>Abrir os 19 screenshots preservados</summary>
+
 
 ### image(10).png
 
@@ -215,8 +243,14 @@ Assistência editorial e conferência de arquivos: ChatGPT/Codex. Relato e autor
 
 ![image(9).png](evidence/19-image-9.png)
 
+</details>
+
 [Arquivo original: Markdown colado.md](evidence/20-Markdown-colado.md)
 
 [Arquivo original: google.md](evidence/21-google.md)
 
 [Arquivo original: gemini-code-1793023616582.md](evidence/22-gemini-code-1793023616582.md)
+
+---
+
+**[Conheça o Traceweave](../../README.md)** — continuidade verificável para engenharia assistida por IA.

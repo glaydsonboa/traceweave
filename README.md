@@ -2,6 +2,12 @@
 
 > **Verifiable engineering continuity for AI-assisted development.**
 
+## Featured case
+
+### [Quando a concorrência ajuda a concorrência. →](research/gemini-context-2026-10-26/README.md)
+
+**Uma crítica construtiva ao Google Gemini, documentada com transcrição, screenshots e hashes de integridade.** O caso mostra uma conversa em que a resposta reconhece a correção do usuário, mas muda o foco na direção contrária.
+
 ## Start with the publication
 
 ### [Agent Self-Report Evidence →](research/agent-self-report/README.md)
