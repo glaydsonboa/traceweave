@@ -12,6 +12,21 @@ Pedi ao Gemini informações sobre os pacotes do próprio Google. Ele explicou m
 
 **Caso para o Traceweave · 26/10/2026 · Relato de Glaydson Rodrigues Boaventura**
 
+## Nota de correção da publicação anterior
+
+Esta página corrige, de forma *forward-only*, a versão publicada no commit [`5d6fd64`](https://github.com/glaydsonboa/traceweave/commit/5d6fd64a8e6a1aecadee94dc21fe1822f0be401f). A publicação anterior preservou os arquivos de evidência, mas não cumpriu integralmente a orientação editorial recebida:
+
+- usou outro título em vez de **“Quando a concorrência ajuda a concorrência.”**;
+- deixou as imagens concentradas em uma galeria técnica, sem usá-las para conduzir a narrativa;
+- não criou atalhos diretos para Google, Gemini e a discussão original no Reddit;
+- ainda declarava dez screenshots depois de o conjunto publicado passar a conter 19.
+
+A execução editorial por IA errou ao tratar a preservação da evidência como se ela bastasse para uma boa publicação. Preservar os arquivos não substitui apresentar corretamente o título, a sequência visual, os links e o contexto definidos pelo autor.
+
+Eu, Glaydson Rodrigues Boaventura, também errei ao não detectar essas falhas na publicação anterior antes de vinculá-la ao post. Assumo essa parte sem transferir à ferramenta uma decisão humana de conferência.
+
+A versão anterior não foi apagada nem silenciosamente reescrita: permanece no histórico Git como prova do erro. Esta revisão registra a correção e explicita o que mudou.
+
 ## Transcrição com identificação das falas — atualização de 26/10/2026
 
 O autor forneceu uma versão com marcações que identificam suas perguntas e o início das respostas do Gemini. A comparação textual com a versão `Dedup Gemini Orgins.md` confirmou que as perguntas e respostas foram preservadas. As diferenças são os marcadores de fala, linhas em branco, retirada da numeração do primeiro título e remoção da frase de interface “Pular para o resultado mais recente do Gemini”.
