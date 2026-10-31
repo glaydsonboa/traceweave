@@ -341,3 +341,13 @@ Log_Date;Content_Path;Total_Views;Unique_Visitors
 2026-10-30;/glaydsonboa/traceweave/pulls;3;1
 2026-10-30;/glaydsonboa/traceweave/pulse;13;3
 2026-10-30;/glaydsonboa/traceweave/tree/main;2;2
+2026-10-31;/glaydsonboa/traceweave;12;3
+2026-10-31;/glaydsonboa/traceweave/actions/metrics/performance;1;1
+2026-10-31;/glaydsonboa/traceweave/actions/metrics/usage;2;1
+2026-10-31;/glaydsonboa/traceweave/actions/workflows/.github/workflows/traffic-logger.yml;1;1
+2026-10-31;/glaydsonboa/traceweave/blob/main/research/agent-self-report/provenance/fable-causal-lineage.md;1;1
+2026-10-31;/glaydsonboa/traceweave/blob/main/research/worion-runtime-e2e-2026-10-14/README.md;4;4
+2026-10-31;/glaydsonboa/traceweave/commit/76d06d7e9a8f83bf9f7c9ecc64213a0c0bc97a4c;3;1
+2026-10-31;/glaydsonboa/traceweave/graphs/code-frequency;2;1
+2026-10-31;/glaydsonboa/traceweave/graphs/traffic;15;2
+2026-10-31;/glaydsonboa/traceweave/pulse;13;3
