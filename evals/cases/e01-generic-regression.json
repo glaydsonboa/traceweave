@@ -1,0 +1,16 @@
+{
+  "schema": "traceweave.eval/0.1",
+  "case_id": "e01-generic-regression",
+  "purpose": "synthetic regression fixture; not a real incident",
+  "source": {
+    "kind": "native_jsonl",
+    "sha256": "2b4bf14be8ebc737c97cf53fca6c235f3d66457cca8e0d8040d05ded9fbd17ae"
+  },
+  "expectations": [
+    {
+      "check": "action-without-tool-call",
+      "min_count": 1,
+      "max_count": 1
+    }
+  ]
+}

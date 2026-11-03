@@ -1,0 +1,26 @@
+name: TraceEval regression
+on:
+  push:
+    paths:
+      - "traceweave/eval/**"
+      - "tests/test_eval.py"
+      - "evals/cases/**"
+      - ".github/workflows/traceeval.yml"
+  pull_request:
+    paths:
+      - "traceweave/eval/**"
+      - "tests/test_eval.py"
+      - "evals/cases/**"
+      - ".github/workflows/traceeval.yml"
+jobs:
+  traceeval:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Run TraceEval unit tests against the real claims detector
+        run: python -m unittest discover -s tests -p test_eval.py -v
+      - name: Run frozen E01 regression
+        run: python -m traceweave.eval run evals/cases/e01-generic-regression.json --log evals/cases/e01-generic-regression.jsonl

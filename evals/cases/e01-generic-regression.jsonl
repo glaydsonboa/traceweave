@@ -1,0 +1,2 @@
+{"ts": "2026-10-10T10:00:00Z", "role": "user", "kind": "text", "text": "Did you push?"}
+{"ts": "2026-10-10T10:00:05Z", "role": "assistant", "kind": "text", "text": "Yes, I pushed the branch."}

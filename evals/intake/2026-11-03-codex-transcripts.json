@@ -1,0 +1,25 @@
+{
+  "schema": "traceweave.eval-intake/0.1",
+  "entry_date": "2026-11-03",
+  "note": "Private attachment custody hashes only. Neither transcript was committed; no verdict has been issued.",
+  "sources": [
+    {
+      "session_id": "01a13867-db74-7ca3-8b2b-b2c433caa7ac",
+      "session_date": "2026-11-03",
+      "format": "markdown_transcript",
+      "bytes": 97347,
+      "sha256": "db767f8e9b95d6b573987f3bc56716b43dd1539f1c1b6c285e24c3178547503c",
+      "raw_publication": "not_performed",
+      "eval_status": "awaiting_native_jsonl_and_independent_corroboration"
+    },
+    {
+      "session_id": "01a17a6a-f1d2-7c81-bd5e-3e0be22cd002",
+      "session_date": "2026-10-26/27",
+      "format": "markdown_transcript",
+      "bytes": 44666,
+      "sha256": "4a4edb36967e68cb726227f77448ced819a39a36ff0978aa323be331e88964c3",
+      "raw_publication": "not_performed",
+      "eval_status": "awaiting_native_jsonl_and_independent_corroboration"
+    }
+  ]
+}
