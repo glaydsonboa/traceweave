@@ -34,7 +34,7 @@ class TestTraceEval(unittest.TestCase):
         self.assertEqual(report["score"], 1.0)
 
     def test_unmet_expectation_is_a_failed_regression(self):
-        self.case["expectations"][0]["min_count"] = 2
+        self.case["expectations"][0].update({"min_count": 0, "max_count": 0})
         self.assertEqual(evaluate_case(self.case, evidence=self.log)["status"], "failed")
 
     def test_hash_mismatch_never_executes_detector(self):
