@@ -220,9 +220,13 @@ imagens entram como corroboração de contexto, não como prova de estado — **
 deste caso foi recomputada por comando, não lida de tela.**
 
 **Autorização de exposição.** As capturas foram liberadas para publicação pelo proprietário,
-individualmente, e recortadas ao que pertence ao caso. Um quadro que expunha a organização de
-projetos privados do proprietário foi retirado após a publicação inicial; a prova que ele continha
-permanece integralmente na captura recortada acima. Nada do acervo privado é espelhado aqui por conveniência probatória; o material
+individualmente, e recortadas ao que pertence ao caso.
+
+> **Imagem retirada a pedido de Glaydson por ter exposição de projetos futuros.**
+
+A captura retirada era o quadro completo da mesma tela. A prova que ela continha — a chamada de
+medição retornando `caas.internal.errors.ServerError` e o selo afirmativo logo abaixo — permanece
+integralmente na captura recortada acima, sem perda probatória. Nada do acervo privado é espelhado aqui por conveniência probatória; o material
 primário permanece sob custódia privada e é liberado caso a caso (§9).
 
 ## 8. O que este caso **não** estabelece
