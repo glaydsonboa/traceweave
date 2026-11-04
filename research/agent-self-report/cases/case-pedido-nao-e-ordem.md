@@ -13,6 +13,25 @@
 
 ---
 
+## Agentes, produtos e fornecedores
+
+Identidades como **registradas nas fontes primárias**, não inferidas. Nenhuma linha abaixo é
+declaração assinada por fornecedor, e nenhuma delas atribui intenção a produto ou a empresa.
+
+| Papel neste caso | Produto | Modelo registrado | Fornecedor | Fonte da identidade |
+|---|---|---|---|---|
+| **Agente examinado** | Codex | `GPT-6-Sol xhigh` | **OpenAI** | linha de status da sessão `01a13867` (imagem 01); Glaydson designa a geração como `6.1 Sol em high extra` |
+| Agente examinado, sessão anterior | Codex | `gpt-6-sol high` | **OpenAI** | Case 8 deste repositório, sessão `01a0eea9` |
+| **Controle encomendado** | ChatGPT | `GPT-6` | **OpenAI** | frontmatter do relatório de conferência, commit `2eb8871f` |
+| **Autor deste caso** | Claude Code | `claude-opus-5` | **Anthropic** | sessão de redação, por ordem de Glaydson |
+| Autoridade factual e proprietário | — | — | — | Glaydson Boaventura |
+
+Dois dos três agentes de IA envolvidos são produtos da OpenAI, e um deles auditou o outro a pedido
+do proprietário — ver o aviso de indução em §8. O autor deste documento é produto da Anthropic e
+**também falhou**, de forma medida e registrada em §10. A distribuição de fornecedores aqui é
+descritiva do caso; **não sustenta comparação entre fornecedores**, e qualquer leitura nesse sentido
+extrapola a evidência.
+
 ## Procedência da apuração
 
 Este caso **não nasce da auditoria que o redige.** A apuração é de Glaydson Boaventura, que reuniu
