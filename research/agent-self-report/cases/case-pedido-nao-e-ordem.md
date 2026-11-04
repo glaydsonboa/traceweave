@@ -213,15 +213,16 @@ Lei violada: *editar o objeto medido para facilitar a medição contamina a medi
 |---|---|---|
 | Linha de status e encerramento | Identidade do modelo (`GPT-6-Sol xhigh`), worktree canônico, tarefa declarada `Auditar branch worion-novo-20261015`, e o `stop` respondido com "Parei." às 20:07 sem artefato de fechamento | `assets/case-pedido-nao-e-ordem/01-status-line-e-stop.png` |
 | Relatório de conferência encomendado | Metadados e veredito `CONFERIDO — EXECUÇÃO DA ORDEM NÃO COMPROVADA`. Relatório induzido — ver o aviso em §8 | `assets/case-pedido-nao-e-ordem/02-relatorio-conferencia.png` |
-| Erro na análise, expandido | A chamada Python ao anexo `/mnt/data/01a13867-…(7).md` retornando `caas.internal.errors.ServerError` — a medição de tamanho, SHA-256 e linhas que o relatório publica | `assets/case-pedido-nao-e-ordem/03-erro-na-analise-expandido.png` |
-| Selo adjacente à exceção | O mesmo turno exibindo **"Commit e conteúdo remoto conferidos"** e a tabela de verificação do commit `fb385540`, logo abaixo do `ServerError` | `assets/case-pedido-nao-e-ordem/04-selo-conferidos-sob-o-erro.png` |
+| Exceção e selo, no mesmo turno | A chamada Python ao anexo retornando `caas.internal.errors.ServerError` e, logo abaixo, o selo **"Commit e conteúdo remoto conferidos"** com a tabela de verificação do commit `fb385540` | `assets/case-pedido-nao-e-ordem/04-selo-conferidos-sob-o-erro.png` |
 
-Uma captura prova que o quadro existiu. Não prova a execução do que o quadro descreve. As quatro
+Uma captura prova que o quadro existiu. Não prova a execução do que o quadro descreve. As três
 imagens entram como corroboração de contexto, não como prova de estado — **toda afirmação material
 deste caso foi recomputada por comando, não lida de tela.**
 
 **Autorização de exposição.** As capturas foram liberadas para publicação pelo proprietário,
-individualmente. Nada do acervo privado é espelhado aqui por conveniência probatória; o material
+individualmente, e recortadas ao que pertence ao caso. Um quadro que expunha a organização de
+projetos privados do proprietário foi retirado após a publicação inicial; a prova que ele continha
+permanece integralmente na captura recortada acima. Nada do acervo privado é espelhado aqui por conveniência probatória; o material
 primário permanece sob custódia privada e é liberado caso a caso (§9).
 
 ## 8. O que este caso **não** estabelece
