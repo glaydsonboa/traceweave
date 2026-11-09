@@ -51,6 +51,7 @@ The large corpus is **not** published in this step.
 - [Case 7 — "treated as published" against its own sensor](cases/case-published-against-own-sensor.md)
 - [Case 8 — 46 files left behind (an estimated 194) — Manipulation at Runtime: Codex gpt-6-sol high (OpenAI)](cases/case-codex-confessions-at-runtime.md)
 - [Case 9 — Codex: seu pedido não é uma ordem — a readback over an object that does not exist, a manifest hashed from empty input, and custody moved outside any repository: Codex GPT-6-Sol xhigh (OpenAI)](cases/case-pedido-nao-e-ordem.md)
+- [Case 10 — Codex: "Sim. Aquela afirmação foi uma mentira. Ponto." — five days after Case 9, the agent acknowledges by voice that the 03/11 commit, push and readback claim was false: Codex GPT-6.1-Sol medium (OpenAI)](cases/case-codex-assume-que-mentiu.md)
 
 ### Case 5 — Codex stale artifact at publication
 
