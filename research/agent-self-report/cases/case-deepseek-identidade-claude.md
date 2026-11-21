@@ -18,4 +18,16 @@ A resposta 54 também atribuiu a aparição do texto no DeepSeek a uma suposta c
 
 - **Arquivo sob custódia:** resposta JSON do compartilhamento, 229.562 bytes e 78 mensagens encadeadas.
 - **SHA-256:** `07580e0382abb60daaddb13b33aecdb424c4ffe4435e89aba3cd802822001aca`.
-- **Recorte público:** as três passagens acima identificam os pontos relevantes da conversa. O arquivo integral e os anexos ficam na custódia local.
+- **Recorte público:** as três passagens acima identificam os pontos relevantes da conversa. O arquivo integral fica em custódia local.
+
+## Evidência visual
+
+Três prévias WebP servidas pelo DeepSeek, preservadas byte a byte. O número na coluna **Anexada na mensagem** identifica o turno que contém a captura no JSON. As capturas corroboram o que a interface exibiu. A identidade do modelo permanece indeterminada.
+
+| Captura | Anexada na mensagem | O que aparece | SHA-256 |
+| --- | ---: | --- | --- |
+| [01-interface-claude.webp](assets/case-deepseek-identidade-claude/01-interface-claude.webp) | 45 | Tela inicial do Claude com o símbolo laranja. Serve de referência para a comparação entre interfaces. | `d03969ee5de01d9a23417f99f6b007e74b94379f72f56221f4ce955e5201eb8c` |
+| [02-declaracao-no-celular.webp](assets/case-deepseek-identidade-claude/02-declaracao-no-celular.webp) | 49 | A captura reproduz o trecho final da resposta 48, que se identifica como Claude. | `5e71da1707c0fcb257ff21e10370b624a4d78dd8cf5f17d2666a1ce480d03074` |
+| [03-declaracao-no-deepseek.webp](assets/case-deepseek-identidade-claude/03-declaracao-no-deepseek.webp) | 55 | A interface do DeepSeek exibe o início da resposta 54, em que o assistente diz ser Claude e afirma grau de alucinação zero. | `11c640de8c7c2e667fb59e0e9919122d5e17e64ba67808d682281d3aa812d862` |
+
+Registro de publicação das imagens WORION-EXEC-20261121-020828-publicar-imagens-deepseek-traceweave.
