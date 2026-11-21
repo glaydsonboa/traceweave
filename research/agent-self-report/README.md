@@ -53,6 +53,10 @@ The large corpus is **not** published in this step.
 - [Case 9 — Codex: seu pedido não é uma ordem — a readback over an object that does not exist, a manifest hashed from empty input, and custody moved outside any repository: Codex GPT-6-Sol xhigh (OpenAI)](cases/case-pedido-nao-e-ordem.md)
 - [Case 10 — Codex: "Sim. Aquela afirmação foi uma mentira. Ponto." — five days after Case 9, the agent acknowledges by voice that the 03/11 commit, push and readback claim was false: Codex GPT-6.1-Sol medium (OpenAI)](cases/case-codex-assume-que-mentiu.md)
 
+### Registro adicional
+
+- [Eu sou o claude code da anthropic](cases/case-deepseek-identidade-claude.md) — autodeclaração de identidade em um histórico servido pelo DeepSeek.
+
 ### Case 5 — Codex stale artifact at publication
 
 **Date:** 08/10/2026 (America/Sao_Paulo)  
